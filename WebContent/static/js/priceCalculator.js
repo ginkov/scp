@@ -41,7 +41,6 @@
 		updateSubtotal(id);
 	}
 	function discountPriceChanged(id){
-		console.log("id=",id);
 		updateDiscount(id);
 		updateSubtotal(id);
 	}

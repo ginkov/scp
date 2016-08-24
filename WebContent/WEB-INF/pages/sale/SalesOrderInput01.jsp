@@ -86,7 +86,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label"> 付款状态</label>
 					<div class="col-md-2">
-						<form:select cssClass="chosen-select" path="payStatus" value="${payStatus}">
+						<form:select path="payStatus" value="${payStatus}" id="select-paystatus">
 							<form:option value="UNPAID" label="未付款" selected="true"/>
 							<form:option value="DOWNPAID" label="已付定金"/>
 							<form:option value="PAID" label="已付全款"/>
@@ -123,7 +123,7 @@
 					<form:hidden path="items[${vs.index}].id"/>
 					<div class="col-md-3">
 						<form:select cssClass="chosen-select" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
-							onchange="productChanged(this.getAttribute('data-id'))" id='prod${length}' data-id="${length}">
+							onchange="productChanged(${vs.index})" id='prod${length}' data-id="${length}">
 							<form:option value="" label=""/>
 							<c:forEach var="optGrp" items="${prodOpts}" varStatus="optGrpIndex">
 								<optgroup label="${optGrp.key}">
@@ -131,17 +131,11 @@
 								</optgroup>
 							</c:forEach>
 						</form:select>
-						<%-- 
-						<form:select cssClass="chosen-select" path="items[${vs.index}].prodSelling.id"
-							onchange="productChanged(this.getAttribute('data-id'))"  id='prod${vs.index}' data-id="${vs.index}"
-							items="${prodSellings}" itemLabel="name" itemValue="id" value="${item.prodSelling.id}" data-placeholder="选择产品组件">
-						</form:select>
-						--%>
 					</div>
 					<div class="col-md-1">
 						<form:input path="items[${vs.index}].quantity" type="number" min="0" 
 							id='qty${vs.index}' cssClass="form-control" value="${item.quantity}" data-id="${vs.index}"
-							onchange="qtyChanged(this.getAttribute('data-id))" />
+							onchange="qtyChanged(${vs.index})" />
 					</div>
 					<div class="col-md-1">
 						<fmt:formatNumber value="${item.listPrice}" pattern=".00" var="itemListPrice"/>
@@ -151,26 +145,15 @@
 					<div class="col-md-1">
 						<form:input path="items[${vs.index}].discount" type="number" min="0" max="1" step="0.01" 
 							id='discount${vs.index}' cssClass="form-control" value="${item.discount}" data-id="${vs.index}"
-							onchange="discountChanged(this.getAttribute('data-id))" />
+							onchange="discountChanged(${vs.index})" />
 					</div>
-					<%--
-					<div class="col-md-2">
-						<div class="input-group">
-						<span class="input-group-addon">￥</span>
-						<fmt:formatNumber value="${item.discountPrice}" pattern=".00" var="itemDiscountPrice"/>
-						<form:input path="items[${vs.index}].discountPrice"  cssClass="form-control" type="number" min="0" step="0.01"
-							id='discountprice${vs.index}' value="${itemDiscountPrice}" data-id="${vs.index}"
-							onchange="discountPriceChanged(this.getAttribute('data-id))" />
-						</div>
-					</div>
-					 --%>
 					<div class="col-md-2">
 						<div class="input-group">
 						<span class="input-group-addon">￥</span>
 						<fmt:formatNumber value="${item.discountPrice}" pattern=".00" var="itemDiscountPrice"/>
 						<form:input path="items[${vs.index}].discountPrice"  cssClass="form-control"
 							type="number" min="0" step="0.01"
-							data-id="${vs.index}" id="discountprice${vs.index}" onchange="discountPriceChanged(this.getAttribute('data-id'))"
+							data-id="${vs.index}" id="discountprice${vs.index}" onchange="discountPriceChanged(${vs.index})"
 							value="${itemDiscountPrice}"/>
 						</div>
 					</div>
@@ -191,15 +174,8 @@
 					<label class="col-md-1 control-label">${length + 1}</label>
 					<form:hidden path="items[${length}].id"/>
 					<div class="col-md-3">
-					<!--  
-						<form:select cssClass="chosen-select" path="items[${length}].prodSelling.id" 
-							onchange="productChanged(this.getAttribute('data-id'))" id='prod${length}' data-id="${length}"
-							items="${prodSellings}" itemLabel="name" itemValue="id" data-placeholder="选择产品组件" >
-							<option value="0">请选择产品</option>
-						</form:select>
-					-->
 						<form:select cssClass="chosen-select" path="items[${length}].prodSelling.id" data-placeholder="请选择"
-							onchange="productChanged(this.getAttribute('data-id'))" id='prod${length}' data-id="${length}">
+							onchange="productChanged(${length})" id='prod${length}' data-id="${length}">
 							<form:option value="" label=""/>
 							<c:forEach var="optGrp" items="${prodOpts}" varStatus="optGrpIndex">
 								<optgroup label="${optGrp.key}">
@@ -211,7 +187,7 @@
 					<div class="col-md-1">
 						<form:input path="items[${length}].quantity" type="number" min="0" data-id="${length}"
 							id='qty${length}' cssClass="form-control" placeholder="数量" 
-							onchange="qtyChanged(this.getAttribute('data-id'))"/>
+							onchange="qtyChanged(${length})"/>
 					</div>
 					<div class="col-md-1">
 						<form:input path="items[${length}].listPrice"  cssClass="form-control text-right" placeholder="标价"
@@ -220,14 +196,14 @@
 					<div class="col-md-1">
 						<form:input path="items[${length}].discount" type="number" data-id="${length}"
 							id='discount${length}' min="0" max="1" step="0.01" cssClass="form-control" placeholder="折扣"
-							onchange="discountChanged(this.getAttribute('data-id'))"/>
+							onchange="discountChanged(${length})"/>
 					</div>
 					<div class="col-md-2">
 						<div class="input-group">
 						<span class="input-group-addon">￥</span>
 						<form:input path="items[${length}].discountPrice"  cssClass="form-control" data-id="${length}"
 							type="number" min="0" step="0.01"
-							id="discountprice${length}" placeholder="折扣价" onchange="discountPriceChanged(this.getAttribute('data-id))"/>
+							id="discountprice${length}" placeholder="折扣价" onchange="discountPriceChanged(${length})"/>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -246,75 +222,16 @@
 <!-- Error Alerts  -->	
 <%@ include file = "/WEB-INF/pages/alert.jsp" %>
 
-<script src="/scp/static/magicsuggest/magicsuggest-min.js"></script>
 <script src="<c:url value="/static/js/priceCalculator.js" />"></script>
-<link rel="stylesheet" href="/scp/static/magicsuggest/magicsuggest-min.css">
 <script>
-
-/*
-	var pricelist = {};	
-
-	function updateListPrice(id){
-		var dbid = $('#prod'+id).val();
-		$('#listprice'+id).val(Number(pricelist[dbid]).toFixed(2));
-	}
-	function updateDiscount(id){
-		var listprice = $('#listprice'+id).val();
-		var discountprice = $('#discountprice'+id).val();
-		$('#discount'+id).val(Number(discountprice/listprice).toFixed(2));
-	}
-	function updateDiscountPrice(id){
-		var listprice = $('#listprice'+id).val();
-		var discount = $('#discount'+id).val();
-		$('#discountprice'+id).val(Number(listprice*discount).toFixed(2));
-	}
-	function updateSubtotal(id){
-		var qty = $('#qty'+id).val();
-		var discountprice = $('#discountprice'+id).val();
-		$('#subtotal'+id).val(Number(qty*discountprice).toFixed(2));
-	}
-	function setQty(id, v) {
-		$('#qty'+id).val(v)
-	}
-	//=================
-	function productChanged(id){
-		updateListPrice(id);
-		updateDiscountPrice(id);
-		setQty(id,1)
-		updateSubtotal(id);
-	}
-	function qtyChanged(id){
-		updateListPrice(id);
-		updateDiscountPrice(id);
-		updateSubtotal(id);
-	}
-	function discountChanged(id){
-		updateDiscountPrice(id);
-		updateSubtotal(id);
-	}
-	function discountPriceChanged(id){
-		updateDiscount(id);
-		updateSubtotal(id);
-	}
-	*/
 	$().ready(function(){
 			    if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
 				pricelist = $('#price_helper').data('pricelist');
-				/*
-				$('#customer').magicSuggest({
-					data: $('#customer_helper').data('customerlist')
-		 			, noSuggestionText: "新客户"
-		 	  		, placeholder: "选择现有客户，或输入新客户名"
-		 			, maxSuggestions: 10
-		 			, maxDropHeight: 140
-		 			, maxSelectionRenderer: function(){return "OK";}
-		 	  		, highlight: false
-		 	  		, useZebraStyle: true
-				}); */
+
 				$('.chosen-select').chosen({"search_contains":true});
+				$('#select-paystatus').chosen({"disable_search":true});
 				$('.datepicker').datepicker({format: 'yyyy-mm-dd'});
 				$('.select2').select2({
-				//$('#customer').select2({
 					tags: true,
 					tokenSeparators: [',', ' ']
 				});

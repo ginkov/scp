@@ -82,7 +82,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label"> 付款状态</label>
 					<div class="col-md-2">
-						<form:select cssClass="chosen-select" path="payStatus" value="${payStatus}">
+						<form:select id="select-paystatus" path="payStatus" value="${payStatus}">
 							<form:option value="UNPAID" label="未付款"/>
 							<form:option value="DOWNPAID" label="已付定金"/>
 							<form:option value="PAID" label="已付全款"/>
@@ -180,6 +180,7 @@
 			function(){
 				pricelist = $('#opt_helper').data('pricelist');
 				$('.chosen-select').chosen({"search_contains":true});
+				$('#select-paystatus').chosen({"disable_search":true});
 				$('.datepicker').datepicker({format: 'yyyy-mm-dd'});
 			});
 </script>

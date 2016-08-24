@@ -11,7 +11,7 @@
 							<th style="text-align:right;">营销类型</th>
 							<th style="text-align:right;">下单日期</th>
 							<th style="text-align:right;">销售渠道</th>
-							<th style="text-align:right;">实际价格</th>
+							<th style="text-align:right;">实际价格(￥)</th>
 							<th style="text-align:right;">付款状态</th>
 							<th style="max-width: 200px; text-align:center;">货品</th>
 						</tr>
@@ -26,7 +26,7 @@
 								<a href="<c:url value="/sale/usertype/detail/${order.userSaleType.id}" />" class="glink">${order.userSaleType.name}</a>
 							<td style="text-align:right;"><fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd"/>
 							<td style="text-align:right;">${order.channelName}
-							<td style="text-align:right;"><fmt:formatNumber type="currency" value="${order.discountPrice}"/>
+							<td style="text-align:right;"><fmt:formatNumber type="number" pattern="#,###.00" value="${order.discountPrice}"/>
 							<td style="text-align:right;">${order.payStatus.description}
 							<td>${order.prodSummary}
 						</tr>
