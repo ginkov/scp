@@ -34,7 +34,9 @@
 	</filter-mapping>
   
 <!-- 
+==============================
 	Servlet Mapping
+==============================
  -->  
  
  	<servlet>
@@ -43,6 +45,10 @@
 		<init-param>
 			<param-name>ContextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/spring.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+	        <param-value>true</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<multipart-config>
@@ -65,15 +71,6 @@
     	<url-pattern>/login</url-pattern>
 	</servlet-mapping>
   
-<!-- 	<servlet>
-	    <servlet-name>index.jsp</servlet-name>
-	    <jsp-file>/WEB-INF/pages/index.jsp</jsp-file>
-	</servlet>
-  	<servlet-mapping>
-    	<servlet-name>index.jsp</servlet-name>
-    	<url-pattern>/index</url-pattern>
-	</servlet-mapping> -->
-  
 	<servlet>
     	<servlet-name>logout.jsp</servlet-name>
     	<jsp-file>/WEB-INF/pages/logout.jsp</jsp-file>
@@ -84,7 +81,9 @@
 	</servlet-mapping>
 
 <!-- 
+==============================
 	Security Settings
+==============================
  -->
 <!-- 
 	<security-role>
@@ -108,31 +107,25 @@
   	</security-constraint> -->
 
 <!-- 
+==============================
 	Special Pages
+==============================
  -->
 
-<!-- 	<welcome-file-list>
-    	<welcome-file>/index</welcome-file>
-  	</welcome-file-list> -->
-
-<!-- 	<login-config>
-    	<auth-method>FORM</auth-method>
-    	<form-login-config>
-    		<form-login-page>/login</form-login-page>
-    		<form-error-page>/login</form-error-page>
-    	</form-login-config>
-  	</login-config>
   	<error-page>
     	<error-code>404</error-code>
-    	<location>/WEB-INF/pages/error/404.jsp</location>
-  	</error-page> -->
+    	<location>/WEB-INF/pages/errors/404.jsp</location>
+  	</error-page>
+
   	<error-page>
     	<error-code>500</error-code>
-    	<location>/WEB-INF/pages/error/500.jsp</location>
+    	<location>/WEB-INF/pages/errors/500.jsp</location>
   	</error-page>
 
 <!-- 
+==============================
 	Session config
+==============================
  -->
   	<session-config>
     	<session-timeout>120</session-timeout>

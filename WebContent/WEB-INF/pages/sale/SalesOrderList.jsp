@@ -31,7 +31,7 @@
     	, "lengthChange": false
     	, "pageLength": 25
     	, orderClasses : false
-    	, columnDefs: [{targets:[6], orderable: false }]
+    	, columnDefs: [{targets:[7], orderable: false }]
 	});
     if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
  });

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.jiayun.scp.dao.DaoService;
 import com.jiayun.scp.model.ExpRecord;
+import com.jiayun.scp.model.FinanceAction;
 import com.jiayun.scp.model.FinanceRecord;
 import com.jiayun.scp.model.FrWeek;
 import com.jiayun.scp.model.SalesOrder;
@@ -25,6 +26,7 @@ public class FrRpt {
 	private long maxDateMillis;
 	
 	private FrWeek[] frWeeks;
+	private List<FrWeek> frWeeksCompressed;
 	
 	private double balance;
 	private double totalIn, totalOut;
@@ -49,6 +51,7 @@ public class FrRpt {
 		init();
 		genFrWeeks();
 		sumFrWeeks();
+		compressRpt();
 	}
 	
 	private void init() {
@@ -68,7 +71,9 @@ public class FrRpt {
 			double outAmt = 0.0;
 			double change = 0.0;
 			for(FinanceRecord fr: frWeeks[i].getIn()) {
-				inAmt += fr.getAmount();
+				if(fr.getAction() == FinanceAction.SALE) {
+					inAmt += fr.getAmount();
+				}
 			}
 			for(FinanceRecord fr: frWeeks[i].getOut()) {
 				outAmt += fr.getAmount();
@@ -105,6 +110,9 @@ public class FrRpt {
 					frWeeks[i].getOut().add(fr);
 					break;
 				case SALE:
+					frWeeks[i].getIn().add(fr);
+					break;
+				case AR:
 					frWeeks[i].getIn().add(fr);
 					break;
 				case INVEST_GOT:
@@ -152,6 +160,15 @@ public class FrRpt {
 		return frList;
 	}
 	
+	private void compressRpt() {
+		frWeeksCompressed = new ArrayList<FrWeek>();
+		for(FrWeek frWeek : frWeeks) {
+			if(frWeek.getIn().size() > 0 || frWeek.getOut().size() > 0) {
+				frWeeksCompressed.add(frWeek);
+			}
+		}
+	}
+	
 	private long roundToDay(long t) {
 		long residual = t % DAY_MILLIS;
 		return t - residual;
@@ -170,8 +187,8 @@ public class FrRpt {
 		return maxWeekMillis;
 	}
 
-	public FrWeek[] getFrWeeks() {
-		return frWeeks;
+	public List<FrWeek> getFrWeeksCompressed(){
+		return frWeeksCompressed;
 	}
 
 	public double getBalance() {

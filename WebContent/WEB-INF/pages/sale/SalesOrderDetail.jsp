@@ -66,6 +66,19 @@
 					<input class="form-control" value="<fmt:formatNumber value="${order.discount}" type="percent" />" readonly>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label"> 付款状态</label>
+				<div class="col-md-2">
+					<input class="form-control" value="${order.payStatus.description}" readonly>
+				</div>
+				<label class="col-md-1 control-label"> 收到全款时间</label>
+				<div class="col-md-2">
+					<div class="input-group">
+					<input class='form-control' value="<fmt:formatDate value="${order.payDate}" pattern="yyyy-MM-dd"/>" readonly />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
+				</div>
+			</div>
 			<div style="margin: 20px 0px; padding: 5px; border-bottom: 1px lightgrey solid">
 				订单详情
 			</div>

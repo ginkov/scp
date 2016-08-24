@@ -36,7 +36,11 @@ public class FinanceRecord {
 		date = so.getOrderDate();
 		sn = so.getSn();
 		amount = so.getDiscountPrice();
-		action = FinanceAction.SALE;
+		if(so.getPayStatus() == PayStatus.PAID) {
+			action = FinanceAction.SALE;
+		} else {
+			action = FinanceAction.AR;
+		}
 		description = so.getProdSummary();
 		type = so.getCustomer().getName();
 		url = "/sale/order/detail/"+ so.getId();

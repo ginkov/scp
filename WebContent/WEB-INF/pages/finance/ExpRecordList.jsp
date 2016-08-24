@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setTimeZone value="GMT"/>
 <fmt:setLocale value="zh_CN" scope="session"/>
 <div class="padding-md">
 	<div class="panel panel-default">
@@ -86,8 +85,9 @@ $(document).ready(function() {
     	, "sPaginationType": "full_numbers"
     	, "lengthChange": false
     	, "pageLength": 25
+    	, "order": [[ 0, "desc" ]]
     	, orderClasses : false
-    	, columnDefs: [{targets:[1,4,5], orderable: false }]
+    	, columnDefs: [{targets:[4,5], orderable: false }]
 	});
 	showBI();
  });

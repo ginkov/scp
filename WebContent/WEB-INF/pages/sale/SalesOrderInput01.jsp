@@ -83,6 +83,23 @@
 						<form:input id="discount" cssClass="form-control" path="discount" value="${discount}" readonly="true" />
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label"> 付款状态</label>
+					<div class="col-md-2">
+						<form:select cssClass="chosen-select" path="payStatus" value="${payStatus}">
+							<form:option value="UNPAID" label="未付款" selected="true"/>
+							<form:option value="DOWNPAID" label="已付定金"/>
+							<form:option value="PAID" label="已付全款"/>
+						</form:select>
+					</div>
+					<label class="col-md-1 control-label"> 收到全款时间</label>
+					<div class="col-md-2">
+						<div class="input-group">
+						<form:input cssClass="form-control datepicker" path="payDate" style="padding-left:15px;"/>
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+				</div>
 			</div> <!-- /Panel body -->
 
 			<div class="panel-footer">
@@ -136,15 +153,28 @@
 							id='discount${vs.index}' cssClass="form-control" value="${item.discount}" data-id="${vs.index}"
 							onchange="discountChanged(this.getAttribute('data-id))" />
 					</div>
+					<%--
 					<div class="col-md-2">
 						<div class="input-group">
 						<span class="input-group-addon">￥</span>
 						<fmt:formatNumber value="${item.discountPrice}" pattern=".00" var="itemDiscountPrice"/>
 						<form:input path="items[${vs.index}].discountPrice"  cssClass="form-control" type="number" min="0" step="0.01"
 							id='discountprice${vs.index}' value="${itemDiscountPrice}" data-id="${vs.index}"
-							onchange="Changed(this.getAttribute('data-id))" />
+							onchange="discountPriceChanged(this.getAttribute('data-id))" />
 						</div>
 					</div>
+					 --%>
+					<div class="col-md-2">
+						<div class="input-group">
+						<span class="input-group-addon">￥</span>
+						<fmt:formatNumber value="${item.discountPrice}" pattern=".00" var="itemDiscountPrice"/>
+						<form:input path="items[${vs.index}].discountPrice"  cssClass="form-control"
+							type="number" min="0" step="0.01"
+							data-id="${vs.index}" id="discountprice${vs.index}" onchange="discountPriceChanged(this.getAttribute('data-id'))"
+							value="${itemDiscountPrice}"/>
+						</div>
+					</div>
+					
 					<div class="col-md-2">
 						<div class="input-group">
 						<span class="input-group-addon">￥</span>
@@ -197,7 +227,7 @@
 						<span class="input-group-addon">￥</span>
 						<form:input path="items[${length}].discountPrice"  cssClass="form-control" data-id="${length}"
 							type="number" min="0" step="0.01"
-							id='discountprice${length}' placeholder="折扣价" onchange="discountPriceChanged(this.getAttribute('data-id))"/>
+							id="discountprice${length}" placeholder="折扣价" onchange="discountPriceChanged(this.getAttribute('data-id))"/>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -217,8 +247,11 @@
 <%@ include file = "/WEB-INF/pages/alert.jsp" %>
 
 <script src="/scp/static/magicsuggest/magicsuggest-min.js"></script>
+<script src="<c:url value="/static/js/priceCalculator.js" />"></script>
 <link rel="stylesheet" href="/scp/static/magicsuggest/magicsuggest-min.css">
-<script type="text/javascript">
+<script>
+
+/*
 	var pricelist = {};	
 
 	function updateListPrice(id){
@@ -263,6 +296,7 @@
 		updateDiscount(id);
 		updateSubtotal(id);
 	}
+	*/
 	$().ready(function(){
 			    if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
 				pricelist = $('#price_helper').data('pricelist');

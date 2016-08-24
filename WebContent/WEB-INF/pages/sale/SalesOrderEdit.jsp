@@ -79,6 +79,23 @@
 						<input id="discount" class="form-control" value="${discount}" readonly />
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label"> 付款状态</label>
+					<div class="col-md-2">
+						<form:select cssClass="chosen-select" path="payStatus" value="${payStatus}">
+							<form:option value="UNPAID" label="未付款"/>
+							<form:option value="DOWNPAID" label="已付定金"/>
+							<form:option value="PAID" label="已付全款"/>
+						</form:select>
+					</div>
+					<label class="col-md-1 control-label"> 收到全款时间</label>
+					<div class="col-md-2">
+						<div class="input-group">
+						<form:input cssClass="form-control datepicker" path="payDate" style="padding-left:15px;"/>
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+				</div>
 			</div> <!-- /Panel body -->
 
 			<div class="panel-footer">

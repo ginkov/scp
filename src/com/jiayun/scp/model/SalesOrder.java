@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -73,14 +75,14 @@ public class SalesOrder {
     @JoinTable(name = "order_service_join", joinColumns=@JoinColumn(name="order_id"), inverseJoinColumns=@JoinColumn(name="service_record_id"))
 	private List<ServiceRecord> serviceRecords;
 	
-	public String getChannelName() {
-		return channelName;
-	}
-
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-	}
-
+    @Enumerated(EnumType.STRING)
+    @Column(name="paystatus")
+    private PayStatus payStatus;
+    
+    @Column(name="paydate")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date payDate;
+    
 	public SalesOrder() {
 		items = new ArrayList<OrderItem>();
 		serviceRecords = new ArrayList<ServiceRecord>();
@@ -89,6 +91,15 @@ public class SalesOrder {
 		listPrice = 0.0;
 		discount = 0.0;
 		discountPrice = 0.0;
+		payStatus = PayStatus.UNPAID;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
 	}
 
 	public Integer getId() {
@@ -195,8 +206,23 @@ public class SalesOrder {
 	public void setServiceRecords(List<ServiceRecord> serviceRecords) {
 		this.serviceRecords = serviceRecords;
 	}
-	
-	
+
+	public PayStatus getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(PayStatus payStatus) {
+		this.payStatus = payStatus;
+	}
+
+	public Date getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
 	public void updatePriceAndDiscount() {
 		updateListPrice();
 		updateDiscountPrice();

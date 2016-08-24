@@ -22,7 +22,7 @@ public class FrWeeksController {
 		model.addAttribute("balance", rpt.getBalance());
 		model.addAttribute("totalIn", rpt.getTotalIn());
 		model.addAttribute("totalOut", rpt.getTotalOut());
-		model.addAttribute("frWeeks", rpt.getFrWeeks());
+		model.addAttribute("frWeeks", rpt.getFrWeeksCompressed());
 
 		model.addAttribute("pageTitle","账户历史");
 		model.addAttribute("pageContent", "finance/BalanceList");

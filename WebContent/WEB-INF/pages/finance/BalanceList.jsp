@@ -39,11 +39,22 @@
 			<div class="col-md-5">
 			<c:forEach items="${frWeek.in}" var="fr">
 				<div class="row">
-					<div class="col-md-1" style="text-align:center;"><fmt:formatDate value="${fr.date}" pattern="MM-dd"/></div>
-					<div class="col-md-3" style="text-align:center;"><a class="glink" href="${pageContext.request.contextPath}${fr.url}">${fr.sn}</a></div>
-					<div class="col-md-2">${fr.type}</div>
-					<div class="col-md-4">${fr.description}</div>
-					<div class="col-md-2" style="text-align:right;"><fmt:formatNumber value="${fr.amount}" type="currency"/></div>
+					<c:choose>
+					<c:when test="${fr.action == 'AR' }">
+						<div class="col-md-1 text-danger" style="text-align:center;"><fmt:formatDate value="${fr.date}" pattern="MM-dd"/></div>
+						<div class="col-md-3" style="text-align:center;"><a class="glink" href="${pageContext.request.contextPath}${fr.url}">${fr.sn}</a></div>
+						<div class="col-md-2 text-danger">${fr.type}</div>
+						<div class="col-md-4 text-danger">${fr.description}</div>
+						<div class="col-md-2 text-danger" style="text-align:right;"><fmt:formatNumber value="${fr.amount}" type="currency"/></div>
+					</c:when>
+					<c:otherwise>
+						<div class="col-md-1" style="text-align:center;"><fmt:formatDate value="${fr.date}" pattern="MM-dd"/></div>
+						<div class="col-md-3" style="text-align:center;"><a class="glink" href="${pageContext.request.contextPath}${fr.url}">${fr.sn}</a></div>
+						<div class="col-md-2">${fr.type}</div>
+						<div class="col-md-4">${fr.description}</div>
+						<div class="col-md-2" style="text-align:right;"><fmt:formatNumber value="${fr.amount}" type="currency"/></div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</c:forEach>
 			</div>
