@@ -31,7 +31,7 @@
 	Spring MVC config
  -->
 
-    <mvc:resources mapping="/static/**" location="/static/" />
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926"/>
     
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     	<property name="prefix" value="/WEB-INF/pages/" />
