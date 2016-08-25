@@ -52,6 +52,9 @@
 		.glink {
 			color: #b8860b; font-weight: bold; 
 		}
+		.no-overflow{
+			overflow:hidden; white-space: nowrap; text-overflow:ellipsis;
+		}
 	</style>
 </head>
 <body>
