@@ -1,15 +1,21 @@
 package com.jiayun.scp.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -49,14 +55,35 @@ public class ExpRecord {
 	
 	@ManyToOne
 	@JoinColumn(name="staff_id")
-	private Staff staff;
+	private Staff staff;  // 花费的付款人
 	
 	@ManyToOne
 	@JoinColumn(name="owner_id")
-	private Staff owner;
+	private Staff owner;  // 花费的记录人
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name="expense_invoice_join", joinColumns=@JoinColumn(name="expense_id"), 
+			inverseJoinColumns=@JoinColumn(name="invoice_id"))
+	private Set<Invoice> invoiceSet;
+	
+	@Transient
+	private boolean paired;
 	
 	public ExpRecord() {
 		date = new Date();
+		invoiceSet = new HashSet<Invoice>();
+		paired = false;
+	}
+	
+	public void clearInvSet() {
+		this.invoiceSet = new HashSet<Invoice>();
+	}
+	
+	public boolean isPaired() {
+		return (invoiceSet.size()>0);
+	}
+	public void setPaired(boolean paired) {
+		this.paired = paired;
 	}
 
 	public Integer getId() {
@@ -122,9 +149,14 @@ public class ExpRecord {
 	public Staff getOwner() {
 		return owner;
 	}
-
 	public void setOwner(Staff owner) {
 		this.owner = owner;
+	}
+	public Set<Invoice> getInvoiceSet() {
+		return invoiceSet;
+	}
+	public void setInvoiceSet(Set<Invoice> invoiceSet) {
+		this.invoiceSet = invoiceSet;
 	}
 
 	

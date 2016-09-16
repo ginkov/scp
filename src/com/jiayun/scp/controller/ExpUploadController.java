@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jiayun.scp.dao.DaoService;
 import com.jiayun.scp.model.ExpRecord;
 import com.jiayun.scp.model.ExpT2;
+import com.jiayun.scp.model.Invoice;
 import com.jiayun.scp.model.Staff;
 import com.jiayun.scp.util.ExpRecordUtil;
 
@@ -57,6 +58,9 @@ public class ExpUploadController {
 	private DaoService<Staff> ss;
 	
 	@Autowired
+	private DaoService<Invoice> invs;
+	
+	@Autowired
 	private ExpRecordUtil erUtil;
 	
 	private String login;
@@ -77,7 +81,7 @@ public class ExpUploadController {
 		validHeaderItems.put("描述", 	"description");
 		validHeaderItems.put("付款人", 	"payer");
 		validHeaderItems.put("支付人", 	"payer");
-
+		validHeaderItems.put("发票号", 	"invNum");
 	}
 	
 	@RequestMapping("/select")
@@ -152,6 +156,7 @@ public class ExpUploadController {
 		posHeaderItems.put("expName", 	-1);
 		posHeaderItems.put("amount", 	-1);
 		posHeaderItems.put("payer", 	-1);
+		posHeaderItems.put("invNum", 	-1);
 
         //For each row, iterate through each columns
         Iterator<Cell> cellIterator = row.cellIterator();
@@ -161,7 +166,7 @@ public class ExpUploadController {
             switch(cell.getCellType()) {
                 case Cell.CELL_TYPE_STRING:
                 	// 检查  Cell 的值是不是在标准字串里面
-                	String cellString = cell.getStringCellValue();
+                	String cellString = cell.getStringCellValue().trim();
                 	String standardString  = validHeaderItems.get(cellString);
                 	if(standardString !=null) {
                 		posHeaderItems.put(standardString, pos);
@@ -253,10 +258,20 @@ public class ExpUploadController {
 			er.setStaff(s);
 			er.setOwner(s);
 			
+			String invNum = getCellStringValue(row, posHeaderItems.get("invNum"), "");
+			
+			if( ! invNum.isEmpty()) {
+				Invoice invoice = invs.getByUniqueString("sn", invNum);
+				if(invoice == null) {
+					invoice = new Invoice();
+					invoice.copyFrom(er);
+				}
+				er.getInvoiceSet().add(invoice);
+			}
+			
 			er.setSn(erUtil.genSN());
 			return er;
 		}
-		
 	} // parse()
 
 	private String getCellStringValue(Row row, int pos, String defaultVal) {
@@ -273,7 +288,6 @@ public class ExpUploadController {
 				result = Boolean.toString(cell.getBooleanCellValue());
 				break;
 			case Cell.CELL_TYPE_NUMERIC:
-//				result = Double.toString(cell.getNumericCellValue());
 				result = String.format("%.0f",cell.getNumericCellValue());
 				break;
 			}

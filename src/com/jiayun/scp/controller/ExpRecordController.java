@@ -2,8 +2,10 @@ package com.jiayun.scp.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +23,7 @@ import com.jiayun.scp.dao.DaoService;
 import com.jiayun.scp.model.ExpRecord;
 import com.jiayun.scp.model.ExpT1;
 import com.jiayun.scp.model.ExpT2;
+import com.jiayun.scp.model.Invoice;
 import com.jiayun.scp.model.Staff;
 import com.jiayun.scp.util.ExpRecordUtil;
 
@@ -33,6 +36,9 @@ public class ExpRecordController {
 	
 	@Autowired
 	private DaoService<ExpRecord> ers;
+	
+	@Autowired
+	private DaoService<Invoice> invs;
 	
 	@Autowired
 	private DaoService<Staff> ss;
@@ -80,16 +86,58 @@ public class ExpRecordController {
 		// set owner
 		er.setOwner(ss.getByName(er.getOwner().getName()));
 		er.setT2(et2s.getByName(er.getT2().getName()));
+		// set invoice
+		String invNum = er.getInvoiceNum();
+		if(invNum != null && ! invNum.isEmpty()) {
+			Invoice inv = invs.getByUniqueString("sn", invNum);
+			if(inv == null) {
+				inv = new Invoice();
+				inv.copyFrom(er);
+			//TODO: 把支出类型与财务类型匹配
+			}
+			er.getInvoiceSet().add(inv);
+		}
 		ers.save(er);
 		return "redirect:/finance/expense/list";
 	}
 
 	@RequestMapping("/detail/{id}")
 	public String detail(Model model, @PathVariable int id) {
-		model.addAttribute("er",ers.getById(id));
+		ExpRecord er = ers.getById(id);
+		model.addAttribute("er",er);
+
+
+		Set<Invoice> il = er.getInvoiceSet();
+		Set<ExpRecord> el;
+		if(il.size()>0) {
+			el = il.iterator().next().getErSet();
+		}
+		else {
+			el = new HashSet<ExpRecord>();
+		}
+		
+		model.addAttribute("il", il);
+		model.addAttribute("el", el);
 		model.addAttribute("pageTitle","支出详情");
 		model.addAttribute("pageContent", "finance/ExpRecordDetail");
 		return "mainpage";
+	}
+	
+	@RequestMapping("/detach/{id}")
+	public String detach(@PathVariable int id) {
+		ExpRecord er = ers.getById(id);
+		Set<Invoice>   il = er.getInvoiceSet();
+		Set<ExpRecord> el = il.iterator().next().getErSet();
+		for(ExpRecord e: el) {
+			e.clearInvSet();
+			e.setInvoiceNum("");
+			ers.save(e);
+		}
+		for(Invoice i: il) {
+			i.clearErSet();
+			invs.save(i);
+		}
+		return "redirect:/finance/expense/detail/"+id;
 	}
 	
 	@RequestMapping("/edit/{id}")
@@ -104,6 +152,8 @@ public class ExpRecordController {
 		return "mainpage";
 	}
 	
+
+	
 	@RequestMapping("/update")
 	public String update(ExpRecord er, HttpServletRequest request, RedirectAttributes ra) {
 		String currentUser = request.getUserPrincipal().getName();
@@ -112,7 +162,21 @@ public class ExpRecordController {
 			old.setAmount(er.getAmount());
 			old.setDate(er.getDate());
 			old.setExpName(er.getExpName());
-			old.setInvoiceNum(er.getInvoiceNum());
+			
+			if(! er.getInvoiceNum().isEmpty()) {
+				if(old.getInvoiceSet().size()>1) {
+					old.setInvoiceNum("");
+				}
+				else if(old.getInvoiceSet().size() == 1) {
+					old.getInvoiceSet().iterator().next().setSn(er.getInvoiceNum());
+				}
+				else {
+					Invoice invoice = new Invoice();
+					invoice.copyFrom(er);
+					old.getInvoiceSet().add(invoice);
+				}
+			}
+
 			old.setStaff(ss.getByName(er.getStaff().getName()));
 			old.setSummary(er.getSummary());
 			old.setSupplierName(er.getSupplierName());

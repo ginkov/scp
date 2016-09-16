@@ -112,6 +112,7 @@
 					<ul class="submenu">
 						<li> <a href="<c:url value="/finance/balance/list"/>"> <span class="submenu-label">账户</span> </a> </li>
 						<li> <a href="<c:url value="/finance/expense/list"/>"> <span class="submenu-label">支出</span> </a> </li>
+						<li> <a href="<c:url value="/finance/invoice/list"/>"> <span class="submenu-label">发票</span> </a> </li>
 					</ul>
 				</li>
 

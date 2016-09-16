@@ -26,19 +26,19 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="description">备注</label>
-				<div class="col-md-9">
-					<input class="form-control" value="${order.description}" readonly>
-				</div>
-			</div>
-			<div class="form-group">
 				<label class="col-md-2 control-label">下单日期</label>
 				<div class="col-md-2">
+					<div class="input-group">
 					<input class='form-control' value="<fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd"/>" readonly />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
 				</div>
 				<label class="col-md-1 control-label" for="deliverDate">交付日期</label>
 				<div class="col-md-2">
+					<div class="input-group">
 					<input id='deliverDate' class='form-control' value="<fmt:formatDate value="${order.deliverDate}" pattern="yyyy-MM-dd"/>" readonly />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
 				</div>
 				<label class="col-md-1 control-label" for="channelName">销售渠道</label>
 				<div class="col-md-3">
@@ -68,15 +68,21 @@
 			</div>
 			<div class="form-group">
 				<label class="col-md-2 control-label"> 付款状态</label>
-				<div class="col-md-2">
+				<div class="col-md-4">
 					<input class="form-control" value="${order.payStatus.description}" readonly>
 				</div>
-				<label class="col-md-1 control-label"> 收到全款时间</label>
-				<div class="col-md-2">
+				<label class="col-md-1 control-label"> 全款时间</label>
+				<div class="col-md-4">
 					<div class="input-group">
 					<input class='form-control' value="<fmt:formatDate value="${order.payDate}" pattern="yyyy-MM-dd"/>" readonly />
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="description">备注</label>
+				<div class="col-md-9">
+					<input class="form-control" value="${order.description}" readonly>
 				</div>
 			</div>
 			<div style="margin: 20px 0px; padding: 5px; border-bottom: 1px lightgrey solid">

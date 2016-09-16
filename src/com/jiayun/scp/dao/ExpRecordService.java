@@ -3,15 +3,14 @@ package com.jiayun.scp.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jiayun.scp.model.ExpRecord;
 
-@Service
-@Configuration
+//@Service
+//@Configuration
+@Repository("ers")
 public class ExpRecordService implements DaoService<ExpRecord> {
 
 	@Autowired
@@ -64,10 +63,10 @@ public class ExpRecordService implements DaoService<ExpRecord> {
 	public ExpRecord del(ExpRecord t) {
 		return dao.del(t);
 	}
-	
+/*	
 	@Bean
 	public ExpRecordService ers() {
 		return new ExpRecordService();
 	}
-
+*/
 }

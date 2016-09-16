@@ -7,76 +7,71 @@
 <div class="padding-md">
 	<div class="panel panel-default">
 		<div class="panel-heading" style="font-size:14px; height:52px;">
-			<span><a href="<c:url value="/finance/expense/list"/>" class='glink'>支出</a> / ${er.sn} </span>
+			<span><a href="<c:url value="/finance/invoice/list"/>" class='glink'>发票</a> / ${invoice.sn} </span>
 			<sec:authorize access="hasAnyRole('ADMIN','SUPER')">
-				<a id="btnEdit" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/expense/edit/${er.id}"/>" style="width: 100px;"><i class="fa fa-pencil"></i> 修改</a>
+				<a id="btnEdit" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/invoice/edit/${invoice.id}"/>" style="width: 100px;"><i class="fa fa-pencil"></i> 修改</a>
 				<button id="btnDel" style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 删除</button>
 			</sec:authorize>
 		</div>
 		<div class="panel-body form-horizontal">
-			<div class="form-group">
-				<label class="col-md-2 control-label">付款人</label>
-				<div class="col-md-2">
-					<input class="form-control" value="${er.staff.description}" readonly />
-				</div>
-				<label class="col-md-offset-5 col-md-1 control-label">记录人</label>
-				<div class="col-md-2">
-					<input class="form-control" value="${er.owner.description}" readonly />
-				</div>
-			</div>
 			<div style="margin:15px 0px; padding:25px 0px 15px 0px; border: dotted 1px #ccc; background-color: #ffffe0;">
-			<div class="form-group">
-				<label class="col-md-2 control-label">发生日期</label>
-				<div class="col-md-2">
-					<input class="form-control" value="<fmt:formatDate value="${er.date}" pattern="yyyy-MM-dd"/>" readonly/>
-				</div>
-				<label class="col-md-1 control-label">类别</label>
-				<div class="col-md-2">
-					<input class="form-control" value="${er.t2.t1.name}" readonly/>
-				</div>
-				<label class="col-md-1 control-label">种类</label>
-				<div class="col-md-3">
-					<input class="form-control" value="${er.t2.name}" readonly/>
-				</div>
-			</div>
-			<!-- 供应商与发票号 -->
-			<div class="form-group">
-				<label for="supplier" class="col-md-2 control-label">供应商</label>
-				<div class="col-md-5">
-					<input class="form-control" value="${er.supplierName}" readonly/>
-				</div>
-				<label class="col-md-1 control-label">发票号</label>
-				<div class="col-md-3">
-					<input class="form-control" value="${er.invoiceNum}" readonly/>
-				</div>
-			</div>
-			<!-- 支出名称与金额 -->
-			<div class="form-group">
-				<label class="col-md-2 control-label">商品名称</label>
-				<div class="col-md-5">
-					<input class="form-control" value="${er.expName}" readonly/>
-				</div>
-				<label class="col-md-1 control-label">金额</label>
-				<div class="col-md-3">
-					<div class="input-group">
-						<span class="input-group-addon">￥</span>
-						<input class="form-control text-right" value="<fmt:formatNumber value="${er.amount}" pattern=".00"/>" readonly>
+				<!-- 供应商与发票号 -->
+				<div class="form-group">
+					<label for="issuer" class="col-md-2 control-label">供应商</label>
+					<div class="col-md-5">
+						<input id="issuer" class="form-control" value="${invoice.issuer}" readonly/>
+					</div>
+					<label class="col-md-1 control-label" for="sn">发票号</label>
+					<div class="col-md-3">
+						<input id="sn" class="form-control" value="${invoice.sn}" readonly/>
 					</div>
 				</div>
-			</div>
-			<!-- 摘要 -->
-			<div class="form-group">
-				<label class="col-md-2 control-label">描述</label>
-				<div class="col-md-9">
-					<textarea class="form-control" readonly style="resize: none;">${er.summary}</textarea>
-				</div>					
-			</div>
+				<!-- 日期、金额 -->
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="date">日期</label>
+					<div class="col-md-2">
+						<div class="input-group">
+						<input id="date" class="form-control" value="<fmt:formatDate value="${invoice.date}" pattern="yyyy-MM-dd"/>" style="padding-left: 15px;" readonly/>
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<label class="col-md-1 control-label" for="amount">金额</label>
+					<div class="col-md-2">
+						<div class="input-group">
+						<span class="input-group-addon">￥</span>
+						<input type="number" min="0" step="0.01" id="amount" class="form-control" value="${invoice.amount}"
+							readonly/>
+						</div>
+					</div>
+					<label class="col-md-1 control-label" for="t2">支出类型</label>
+					<div class="col-md-3">
+						<input class="form-control" value="${invoice.type.description}" readonly/>
+					</div>
+				</div>
+				<!-- 描述 -->
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="description">内容描述</label>
+					<div class="col-md-9">
+						<input class="form-control" readonly value=${invoice.description} />
+					</div>					
+				</div>
+				<!-- 类别 -->
+				<div class="form-group">
+					<label class="col-md-2 control-label">原始发票</label>
+					<div class="col-md-2">
+						<input class="form-control" value='${invoice.original?"是":"否"}' readonly />
+					</div>
+					<label class="col-md-1 control-label">已匹配</label>
+					<div class="col-md-2">
+						<input class="form-control" value='${invoice.used?"是":"否"}' readonly />
+					</div>
+				</div>
 			</div> <!-- /单据格式 -->
 		</div> <!-- /Panel body -->
-		<c:if test="${er.paired}">
+		<c:if test="${invoice.used}">
 		<div class="panel-footer">
 			<div class="row" style="font-size: 14px; padding:5px 0; margin:5px 10px;"> 发票/支出匹配
-				<a id="btnDetach" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/expense/detach/${er.id}"/>" style="width: 100px;"><i class="fa fa-random"></i> 解除匹配</a>
+				<a id="btnDetach" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/invoice/detach/${invoice.id}"/>" style="width: 100px;"><i class="fa fa-random"></i> 解除匹配</a>
 			</div>
 			<div class="row" style="text-align:center; padding:4px 10px 2px 10px; margin: 0 10px; background-color: #eee;
 					border-bottom: 0.5px solid #ddd; border-radius: 3px;">
@@ -84,7 +79,7 @@
 				<div class="col-md-2" style="border-left: 1px solid #ccc; border-right: 1px solid #ccc;">匹配</div>
 				<div class="col-md-5">支出</div>
 			</div>
-			<div class="row" style="padding: 5px 0; margin: 0 10px;">
+			<div class="row" style="padding: 5px 0; margin: 0 10px 5px 10px;">
 				<div class="col-md-5">
 					<c:forEach items="${il}" var="inv">
 					<div class="row">
@@ -120,7 +115,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
-        		<a type="button" class="btn btn-sm btn-danger" href="<c:url value="/finance/expense/del/${er.id}" />">删除</a>
+        		<a type="button" class="btn btn-sm btn-danger" href="<c:url value="/finance/invoice/del/${invoice.id}" />">删除</a>
 			</div>
 		</div>
 	</div>
@@ -128,14 +123,6 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	var login = "${pageContext.request.userPrincipal.name}";
-	var owner = "${er.owner.name}";
-	if(owner != login){
-		//$("#btnDel").prop("disabled", "true");
-		//$("#btnEdit").prop("disabled", "true");
-		$("#btnEdit").remove();
-		$("#btnDel").remove();
-	}
     $('#orders').DataTable({
 		language: {url: '${pageContext.request.contextPath}/static/Endless-1.5.1/i18n/dataTable-Chinese.json'}
     	, "bJQueryUI": true

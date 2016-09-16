@@ -30,12 +30,6 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="description">备注</label>
-					<div class="col-md-9">
-						<form:input id="description" cssClass="form-control" path="description"/>
-					</div>
-				</div>
-				<div class="form-group">
 					<label class="col-md-2 control-label" for="orderDate">下单日期</label>
 					<div class="col-md-2">
 						<div class="input-group">
@@ -88,12 +82,18 @@
 							<form:option value="PAID" label="已付全款"/>
 						</form:select>
 					</div>
-					<label class="col-md-1 control-label"> 收到全款时间</label>
+					<label class="col-md-1 control-label"> 全款时间</label>
 					<div class="col-md-2">
 						<div class="input-group">
 						<form:input cssClass="form-control datepicker" path="payDate" style="padding-left:15px;"/>
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="description">备注</label>
+					<div class="col-md-9">
+						<form:input id="description" cssClass="form-control" path="description"/>
 					</div>
 				</div>
 			</div> <!-- /Panel body -->

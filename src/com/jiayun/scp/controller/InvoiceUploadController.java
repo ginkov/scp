@@ -2,6 +2,7 @@ package com.jiayun.scp.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,21 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jiayun.scp.dao.DaoService;
-import com.jiayun.scp.model.ProdC2;
-import com.jiayun.scp.model.ProdPart;
-import com.jiayun.scp.model.ProdPartItem;
-import com.jiayun.scp.model.ProdSelling;
+import com.jiayun.scp.model.Invoice;
+import com.jiayun.scp.model.InvoiceType;
 
 @Controller
-@RequestMapping("/product/combo_upload")
-public class ProdSellingComboUploadController {
-	private static final String REDIR_COMBO_LIST="redirect:/product/combo/list";
+@RequestMapping("/finance/invoice_upload")
+public class InvoiceUploadController {
+
+//	private static final Logger log = Logger.getLogger(SalesOrderUploadController.class);
+	private final String HOME = "redirect:/finance/invoice/list";
 
 	// 列出 Excel 头部所有合法的字符项.
 	private static Map<String, String> validHeaderItems = new HashMap<>();
 
 	// 列出 Excel 头部必须的合法字符项.
-	private static String[] requiredFeilds = {"name", "part"};
+	private static String[] requiredFeilds = {"date", "sn", "amount"};
 
 	// 用于解析链路配置文件头部的标识位.
 	private Map<String, Integer> posHeaderItems =  new HashMap<>();
@@ -42,32 +43,33 @@ public class ProdSellingComboUploadController {
 	private ArrayList<String> invalidRows;
 	
 	@Autowired
-	private DaoService<ProdSelling> pss;
-	
-	@Autowired
-	private DaoService<ProdPart> pps;
-	
-	@Autowired
-	private DaoService<ProdC2> pc2s;
-	
+	private DaoService<Invoice> invs;
+
 	static {
-		validHeaderItems.put("子类", 	"c2");
-		validHeaderItems.put("种类", 	"c2");
-		validHeaderItems.put("名称",		"name");
-		validHeaderItems.put("部件",		"part");
-		validHeaderItems.put("价格", 	"price");
-		validHeaderItems.put("标价", 	"price");
-		validHeaderItems.put("上线日期", 	"onlineDate");
+		validHeaderItems.put("日期",	 	"date");
+		validHeaderItems.put("开票日期", 	"date");
+		validHeaderItems.put("发票号", 	"sn");
+		validHeaderItems.put("开票单位",  "issuer");
+		validHeaderItems.put("供货商",   "issuer");
+		validHeaderItems.put("金额",		"amount");
+		validHeaderItems.put("内容", 	"description");
 		validHeaderItems.put("描述", 	"description");
-		validHeaderItems.put("摘要", 	"description");
+		validHeaderItems.put("是否为原始发票",	"isOriginal");
+		validHeaderItems.put("原始发票",	"isOriginal");
+		validHeaderItems.put("财务支出类型", "type");
+		validHeaderItems.put("财务类型", "type");
+		validHeaderItems.put("支出类型", "type");
+		validHeaderItems.put("发票类型", "type");
+		validHeaderItems.put("类型", "type");
 	}
-	
+
 	@RequestMapping("/select")
 	public String upload(Model model) {
-		model.addAttribute("pageTitle","批量上传产品套装清单");
-		model.addAttribute("pageContent", "product/ComboUpload");
+		model.addAttribute("pageTitle","批量上传发票信息");
+		model.addAttribute("pageContent", "finance/InvoiceUpload");
 		return "mainpage";
 	}
+		
 
 	@RequestMapping("/do")
 	public String doUpload(@RequestParam MultipartFile upload, RedirectAttributes ra) {
@@ -90,37 +92,43 @@ public class ProdSellingComboUploadController {
                 }
                 else {
                 	// 找到头了, 根据头中每个字段的位置，解析每一行.
-                	ProdSelling combo = parseRow(row);
-                	if(combo!=null) {
-                		pss.save(combo);
+                	Invoice invoice = parseRow(row);
+                	if(invoice!=null) {
+                		invs.save(invoice);
                 		++ count;
                 	}
                 }
             }
-            
             workbook.close();
-            ra.addFlashAttribute("err",  "共导入 "+count+" 条记录");
+            ra.addFlashAttribute("err",  "共导入 "+count+" 条发票信息");
 		} catch (IOException e) {
 			ra.addFlashAttribute("err", "打开上传文件 "+upload.getOriginalFilename()+" 时出错");
 		}
-		return REDIR_COMBO_LIST;
-	}
-	
+		return HOME;
+	} 
 	// 解析一行是否为头部
 	private boolean parseHeader(Row row) {
 		
 		// 要判断是否有一个合理的头部，
 		/* 对 Excel 表的要求:
-			 * 0. 类型 - 可选
-			 * 1. 名称 - 必须
-			 * 2. 部件 - 必须
+			 * 0. 日期 - 必须
+			 * 1. 发票号 - 必须
+			 * 2. 开票单位 - 可选
+			 * 3. 内容 - 可选
+			 * 4. 金额    - 必须
+			 * 5. 是否为原始发票 - 可选
+			 * 6. 财务支出类型 - 可选，只有三类 费用、支出、原材料
 		*/
         
 		// 对标题字段位置进行初始化
 		// 对应的项在 Excel 中列中的位置, -1 代表没有该列.
-		posHeaderItems.put("c2", 	-1);
-		posHeaderItems.put("name", 	-1);
-		posHeaderItems.put("part", 	-1);
+		posHeaderItems.put("date", 	-1);
+		posHeaderItems.put("sn", 	-1);
+		posHeaderItems.put("issuer", 	-1);
+		posHeaderItems.put("description", 		-1);
+		posHeaderItems.put("amount", 	-1);
+		posHeaderItems.put("isOriginal", 	-1);
+		posHeaderItems.put("type", 	-1);
 
         //For each row, iterate through each columns
         Iterator<Cell> cellIterator = row.cellIterator();
@@ -154,10 +162,10 @@ public class ProdSellingComboUploadController {
 		return result;
 	}
 	
-	private boolean addInvalidRow(String name, String part) {
+	private boolean addInvalidRow(String date, String product, String price) {
 		StringBuilder invalidRow = new StringBuilder();
-		invalidRow.append(name).append(":").append(part);
-		if(invalidRow.length()>1) {
+		invalidRow.append(date).append(":").append(product).append(":").append(price);
+		if(invalidRow.length()>2) {
 			invalidRows.add(invalidRow.toString());
 			return true;
 		}
@@ -166,39 +174,62 @@ public class ProdSellingComboUploadController {
 		}
 	}
 
-	private ProdSelling parseRow(Row row) {
+	private Invoice parseRow(Row row) {
 		
 		// 订单中必须有的字段
-		String name  	= getCellStringValue(row, posHeaderItems.get("name"), "");
-		String partName = getCellStringValue(row, posHeaderItems.get("part"), "");
+		Date date = getCellDateValue(row, posHeaderItems.get("date"));
+		String sn = getCellStringValue(row, posHeaderItems.get("sn"),  "");
+		String amountStr = getCellStringValue(row, posHeaderItems.get("amount"),  "");
 		
-		ProdSelling ps;
-
-		// 两个必要字段均不能为空
-		if(name.isEmpty() || partName.isEmpty()) {
-			addInvalidRow(name, partName);
+		double amount;
+	
+		Invoice invoice = new Invoice();
+		
+		// 三个必要字段均不能为空
+		if(date == null || sn.isEmpty() || amountStr.isEmpty()) {
+			addInvalidRow(date.toString(), sn, amountStr);
 			return null;
 		}
 		else {
-			ProdPart pp = pps.getByName(partName);
-			if(pp == null) {
+			// check amount format 
+			try {
+				amount = Double.parseDouble(amountStr);
+			}
+			catch(NumberFormatException e) {
+				addInvalidRow(date.toString(), sn, amountStr);
 				return null;
 			}
-			else {
-				ProdPartItem ppi = new ProdPartItem();
-				ppi.setPart(pp);
-				ppi.setQuantity(1);
-				ps = pss.getByName(name);
-				if(ps ==null) {
-					ps = new ProdSelling();
-					ps.setName(name);
-					ps.setC2(pc2s.getByName("套装"));
-				}
-				ppi.setSelling(ps);
-				ps.getPartslist().add(ppi);
-				ps.setListprice(ps.getListprice()+pp.getListprice());
+
+			invoice.setAmount(amount);
+			invoice.setSn(sn);
+			invoice.setDate(date);
+			
+			String description = getCellStringValue(row, posHeaderItems.get("description"), "批量导入的发票");
+			invoice.setDescription(description);
+
+			String issuer = getCellStringValue(row, posHeaderItems.get("issuer"), "未知");
+			invoice.setIssuer(issuer);
+			
+			String typeStr = getCellStringValue(row, posHeaderItems.get("type"), "费用");
+			if(typeStr.startsWith("原材料")) {
+				invoice.setType(InvoiceType.MATERIAL);
 			}
-			return ps;
+			else if(typeStr.startsWith("人工")) {
+				invoice.setType(InvoiceType.LABOR);
+			}
+			else {
+				invoice.setType(InvoiceType.EXPENSE);
+			}
+			
+			String isOriginalStr = getCellStringValue(row, posHeaderItems.get("isOriginal"), "False");
+			if(isOriginalStr == null || isOriginalStr.isEmpty() || isOriginalStr.startsWith("否")) {
+				invoice.setOriginal(false);
+			}
+			else {
+				invoice.setOriginal(true);
+			}
+
+			return invoice;
 		}
 		
 	} // parse()
@@ -226,6 +257,11 @@ public class ProdSellingComboUploadController {
 		}
 		return result;
 	}
+	
+	private Date getCellDateValue(Row row, int pos) {
+		if(pos<0) return null;
+		Cell cell = row.getCell(pos);
+		return cell.getDateCellValue();
+	}
 
 }
-       

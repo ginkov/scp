@@ -35,6 +35,7 @@
 							<th style="text-align:right;">种类</th>
 							<th style="text-align:right;">商品名</th>
 							<th style="text-align:right;">金额</th>
+							<th style="text-align:right;">发票</th>
 							<th style="text-align:right;">付款人</th>
 							<th style="text-align:right;">记录人</th>
 						</tr>
@@ -49,6 +50,7 @@
 							<td style="text-align:right;">${er.t2.name}
 							<td style="text-align:right;">${er.expName}
 							<td style="text-align:right;"><fmt:formatNumber type="currency" value="${er.amount}"/>
+							<td style="text-align:right;">${er.paired?"是":"否"}
 							<td style="text-align:right;">${er.staff.description}
 							<td style="text-align:right;">${er.owner.description}
 						</tr>

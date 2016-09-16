@@ -29,6 +29,7 @@
     	, "sPaginationType": "full_numbers"
     	, "lengthChange": false
     	, "pageLength": 25
+    	, "order": [[ 3, "desc" ]]
     	, orderClasses : false
     	, columnDefs: [{targets:[7], orderable: false }]
 	});

@@ -167,7 +167,7 @@ public class SalesOrderUploadController {
             switch(cell.getCellType()) {
                 case Cell.CELL_TYPE_STRING:
                 	// 检查  Cell 的值是不是在标准字串里面
-                	String cellString = cell.getStringCellValue();
+                	String cellString = cell.getStringCellValue().trim();
                 	String standardString  = validHeaderItems.get(cellString);
                 	if(standardString !=null) {
                 		posHeaderItems.put(standardString, pos);

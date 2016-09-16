@@ -5,11 +5,6 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" style="height:52px;">
 			<span style="font-size:18px;">财务记录 </span>按周统计 
-			<%-- 
-			<a class="btn btn-success btn-sm pull-right" href="<c:url value="/customer/orgtype/input"/>" style="margin-right:5px; width: 100px;">
-				<i class="fa fa-plus"></i> 添加
-			</a>
-			--%>
 		</div>
 		<div class="panel-body">
 		<div class="row" style="font-size: 14px; text-align:center; padding-bottom: 5px; margin-bottom: 0px; border-bottom: 0.5px solid #ddd;">
