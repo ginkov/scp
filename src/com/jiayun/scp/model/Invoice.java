@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
-@Table
+@Table(name="invoice")
 public class Invoice {
 
 	@Id
