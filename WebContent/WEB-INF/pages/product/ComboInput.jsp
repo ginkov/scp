@@ -105,7 +105,7 @@
 					</div>
 					<div class="col-md-1">
 						<form:input path="partslist[${vs.index}].quantity" type="number" cssClass="form-control" min="0"
-							data-id="${vs.index}" id="qty${vs.index}" />
+							data-id="${vs.index}" id="qty${vs.index}" onchange="updatePrice()"/>
 					</div>
 					</div><!-- form-group  -->
 				</c:forEach>
@@ -124,6 +124,15 @@ function partChanged(id){
 	$('#c2'+id).val(ps[partId]['c2']);
 	$('#price'+id).val(Number(ps[partId]['price']).toFixed(2));
 	$('#qty'+id).val(1);
+	updatePrice();
+}
+function updatePrice(){
+	var pn = $('#part_item_number_helper').data('partnumber');
+	var price = 0.0;
+	for(var i=0; i<pn; i++){
+		price += $('#price'+i).val()*$('#qty'+i).val();
+	}
+	$('#price').val(Number(price).toFixed(2));
 }
 $().ready(
 	function(){

@@ -102,6 +102,28 @@
 						<span class="menu-hover"></span>
 					</a>
 				</li>
+			    <!-- 产品 -->
+			    <li class="openable">
+			    	<a href="#">
+						<span class="menu-icon"> <i class="fa fa-leaf"></i> </span>
+						<span class="text">产品</span>
+						<span class="menu-hover"></span>
+					</a>
+					<ul class="submenu">
+						<li> <a href="<c:url value="/product/combo/list"/>"> <span class="submenu-label">套装</span> </a> </li>
+						<li> <a href="<c:url value="/product/part/list"/>"> <span class="submenu-label">部件</span> </a> </li>
+					</ul>
+			    </li>
+
+			    <!-- 客户-->
+			    <li>
+				    <a href="<c:url value="/customer/customer/list"/>">
+					    <span class="menu-icon"> <i class="fa fa-heart"></i> </span>
+					    <span class="text"> 客户 </span>
+					    <span class="menu-hover"></span>
+				    </a>
+			    </li>
+
 				<!-- 财务 -->				
 				<li class="openable">
 			    	<a href="#">
@@ -116,29 +138,6 @@
 					</ul>
 				</li>
 
-			    <!-- 客户-->
-			    <li>
-				    <a href="<c:url value="/customer/customer/list"/>">
-					    <span class="menu-icon"> <i class="fa fa-heart"></i> </span>
-					    <span class="text"> 客户 </span>
-					    <span class="menu-hover"></span>
-				    </a>
-			    </li>
-
-			    <!-- 产品 -->
-			    <!-- 
-			    <li class="openable">
-			    	<a href="#">
-						<span class="menu-icon"> <i class="fa fa-leaf"></i> </span>
-						<span class="text">产品</span>
-						<span class="menu-hover"></span>
-					</a>
-					<ul class="submenu">
-						<li> <a href="<c:url value="/product/category/list"/>"><span class="submenu-label">产品类别</span></a></li>
-						<li> <a href="<c:url value="/product/series/list"/>"><span class="submenu-label">产品系列</span></a></li>
-						<li> <a href="<c:url value="/product/model/list"/>"> <span class="submenu-label">产品型号</span> </a> </li>
-					</ul>
-			    </li> -->
 			    <!-- 管理 -->
 			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
 			    <li class="openable">
@@ -159,8 +158,7 @@
 			    			<a href='#'> <span class="submenu-label">产品</span> </a>
 			    			<ul class="submenu third-level">
 								<li> <a href="<c:url value="/product/category/list"/>"> <span class="submenu-label">类型</span> </a> </li>
-								<li> <a href="<c:url value="/product/part/list"/>"> <span class="submenu-label">部件</span> </a> </li>
-								<li> <a href="<c:url value="/product/combo/list"/>"> <span class="submenu-label">套装</span> </a> </li>
+								<li> <a href="<c:url value="/product/comboTemplate/list"/>"> <span class="submenu-label">套装模板</span> </a> </li>
 			    			</ul>
 			    		</li>
 			    		<li class="openable">

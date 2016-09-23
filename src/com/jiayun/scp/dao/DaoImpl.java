@@ -24,7 +24,7 @@ public class DaoImpl<T> implements DAO<T> {
 
 	@Override
 	public T getById(Class<T> typeClass, Integer id) {
-		return sf.getCurrentSession().load(typeClass, id);
+		return sf.getCurrentSession().get(typeClass, id);
 	}
 
 	@SuppressWarnings("unchecked")

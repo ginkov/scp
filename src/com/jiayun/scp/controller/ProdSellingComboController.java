@@ -23,6 +23,7 @@ import com.jiayun.scp.dao.DaoService;
 import com.jiayun.scp.model.OrderItem;
 import com.jiayun.scp.model.ProdC1;
 import com.jiayun.scp.model.ProdC2;
+import com.jiayun.scp.model.ProdComboTemplate;
 import com.jiayun.scp.model.ProdPart;
 import com.jiayun.scp.model.ProdPartItem;
 import com.jiayun.scp.model.ProdSelling;
@@ -43,6 +44,9 @@ public class ProdSellingComboController {
 	
 	@Autowired
 	private DaoService<ProdC1> pc1s;
+	
+	@Autowired
+	private DaoService<ProdComboTemplate> pcts;
 	
 	@Autowired
 	private DaoService<SalesOrder> sos;
@@ -83,7 +87,7 @@ public class ProdSellingComboController {
 
 	@RequestMapping("/input")
 	public String input(Model model, @ModelAttribute ProdSelling combo) {
-		// 这里在后台数据库中，指定C1类型“套数”的 ID 为1
+		// 这里在后台数据库中，指定C1类型“套装”的 ID 为1
 		Set<ProdC2> c2list = pc1s.getById(1).getC2list();
 		model.addAttribute("c2list", c2list);
 		
@@ -92,6 +96,20 @@ public class ProdSellingComboController {
 		model.addAttribute("partOpts", partOpts);
 		
 		model.addAttribute("partSummary",getPartSummary());
+		
+		if(combo.getPartslist().size()<1 && (combo.getName() ==null || combo.getName().isEmpty())){
+			// 刚刚新生成的 Combo, 还没有进行任务修改
+			ProdComboTemplate pct = pcts.getById(0);
+			if(pct != null) {
+				for(ProdPartItem ppi: pct.getPs().getPartslist()) {
+					ProdPartItem ppiNew = new ProdPartItem();
+					ppiNew.setPart(ppi.getPart());
+					ppiNew.setQuantity(ppi.getQuantity());
+					combo.getPartslist().add(ppiNew);
+					combo.genListprice();
+				}
+			}
+		}
 
 		List<ProdPartItem> toBeDel = combo.removeEmptyItems();
 		for(ProdPartItem ppi: toBeDel) {

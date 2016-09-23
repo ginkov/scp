@@ -82,6 +82,14 @@ public class ProdSelling {
 	public double getListprice() {
 		return listprice;
 	}
+	
+	public void genListprice() {
+		double lp = 0.0;
+		for(ProdPartItem ppi: partslist) {
+			lp += ppi.getPart().getListprice() * ppi.getQuantity();
+		}
+		this.listprice = lp;
+	}
 
 	public void setListprice(double listprice) {
 		this.listprice = listprice;
