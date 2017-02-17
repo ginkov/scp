@@ -1,7 +1,10 @@
 package com.jiayun.scp.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -88,7 +91,13 @@ public class StaffController {
 	@RequestMapping("/input")
 	public String add(Model model) {
 		StaffForm s = new StaffForm();
+		List<Role> roles = new ArrayList<>();
+		for(Role r: rs.getAll()) { 
+			if(r.getId() > 1) { roles.add(r); }
+		};
+		
 		model.addAttribute("staffForm",s);
+		model.addAttribute("roles",roles);
 		model.addAttribute("pageTitle","添加用户");
 		model.addAttribute("pageContent", "staff/StaffInput");
 		return "mainpage";
@@ -100,20 +109,20 @@ public class StaffController {
 
 		Staff s = new Staff();
 		s.setName(sf.getName());
-		s.setDescription(sf.getDescription());
-		s.setPass_md5(passwordEncoder.encode(sf.getPass()));
-
-		Role user = rs.getById(3);
-		Role admin = rs.getById(2);
-		if(sf.getIsUser()) {
-			s.addRole(user);
-		} else {
-			s.delRole(user);
+		
+		// Staff 的描述不能为空. 如果为空，设为与 name 相同
+		String desc = sf.getDescription();
+		if (desc == null || desc.isEmpty()) {
+			desc = sf.getName();
 		}
-		if(sf.getIsAdmin()) {
-			s.addRole(admin);
-		} else {
-			s.delRole(admin);
+		s.setDescription(desc);
+		
+		s.setPass_md5(passwordEncoder.encode(sf.getPass()));
+		if(sf.getRoles() != null) {
+			for(String r: sf.getRoles()) {
+				Role role = rs.getByUniqueString("role", r);
+				s.getRoles().add(role);
+			}
 		}
 		
 		String err="";
@@ -127,6 +136,36 @@ public class StaffController {
 		return "redirect:/staff/list";
 	}
 	
+	@RequestMapping("/edit/{id}")
+	public String edit(Model model, @PathVariable int id) {
+		Staff s = ss.getById(id);
+		StaffForm sf = new StaffForm(s);
+		List<Role> roles = new ArrayList<>();
+		for(Role r: rs.getAll()) { 
+			if(r.getId() > 1) { 
+				roles.add(r); 
+			}
+		};
+		// 这里真得很有意思， Spring MVC 会自动设备哪些 Roles 是这个 Staff 已有的 
+		model.addAttribute("sf", sf);
+		model.addAttribute("roles",roles);
+		model.addAttribute("pageTitle","修改用户权限");
+		model.addAttribute("pageContent", "staff/StaffEdit");
+		return "mainpage";
+	}
+	
+	
+	@RequestMapping("/update")
+	public String update(@ModelAttribute StaffForm sf) {
+		Staff s = ss.getByName(sf.getName());
+		Set<Role> roles = new HashSet<>();
+		for(String str : sf.getRoles()) {
+			roles.add(rs.getByUniqueString("role", str));
+		}
+		s.setRoles(roles);
+		ss.update(s);
+		return "redirect:/staff/list";
+	}
 	@RequestMapping("/del/{id}")
 	public String del(@PathVariable int id) {
 		ss.delById(id);

@@ -7,7 +7,7 @@
 	<div class="panel panel-default">
 			<div class="panel-heading" style="height:52px;">
 				<span style="font-size:18px;">套装列表</span>
-			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+			    <sec:authorize access="hasAnyRole('PRODUCT','SUPER')">
 				<a href="<c:url value="/product/combo_upload/select"/>" style="padding-left:15px;" class="glink">批量导入</a>
 				<a class="btn btn-success btn-sm pull-right" href="<c:url value="/product/combo/input"/>" style="margin-right:15px; width: 100px;">
 						添加 <i class="fa fa-cube"></i>

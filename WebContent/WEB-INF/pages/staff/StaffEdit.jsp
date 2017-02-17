@@ -4,30 +4,16 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="padding-md">
 	<div class="panel panel-default">
-		<form:form modelAttribute="staffForm" cssClass="form-horizontal" action="save" method="post" acceptCharset='utf-8'>
+		<c:url var="updateUrl" value="/staff/update"/>
+		<form:form modelAttribute="sf" cssClass="form-horizontal" action="${updateUrl}" method="post" acceptCharset='utf-8'>
 			<div class="panel-heading" style="font-size:14px; height:52px;">
-				<a href="<c:url value="/staff/list"/>" class="glink">员工列表</a> / 添加 <span id="pPhynetMsg"></span>
-				<input class="btn btn-success btn-sm pull-right" style="width: 100px;" type="submit" value="添加"/>
+				<a href="<c:url value="/staff/list"/>" class="glink">员工列表</a> / 修改权限 / <span style="font-weight:bold;">${sf.description}</span>
+				<input class="btn btn-success btn-sm pull-right" style="width: 100px;" type="submit" value="保存"/>
 			</div>
 			<div class="panel-body">
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="name">账号</label>
-					<div class="col-md-7">
-						<form:input id="name" cssClass="form-control" path="name"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="description">姓名或昵称</label>
-					<div class="col-md-7">
-						<form:input id="description" cssClass="form-control" path="description"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="pass">初始密码</label>
-					<div class="col-md-7">
-						<form:input id="pass" cssClass="form-control" path="pass"/>
-					</div>
-				</div>
+				<form:hidden path="name"/>
+				<form:hidden path="description"/>
+				<form:hidden path="pass"/>
 				<div class="form-group">
 					<label class="col-md-3 control-label">权限组</label>
 					<c:set var="len" value="${fn:length(roles)}"/>
@@ -72,3 +58,18 @@
 		</form:form>
 	</div> <!-- /Panel -->
 </div> <!-- ./padding -->
+
+
+<script type="text/javascript">
+/*
+var currentRoles = JSON.parse('${rolesName}');
+console.log(currentRoles);
+$(document).ready(function() {
+	if(currentRoles){
+		for ( var r in currentRoles) {
+			$("input:checkbox[value='" + r + "']").prop("check", true);
+		}
+	}
+});
+*/
+</script>

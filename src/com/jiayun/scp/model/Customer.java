@@ -62,6 +62,10 @@ public class Customer {
     public Customer() {
     	addresses = new ArrayList<CustomerAddress>();
     	registerTime = new Date();
+    	phone1 = "";
+    	phone2 = "";
+    	phone3 = "";
+    	phone4 = "";
     }
 	
 	public Integer getId() {

@@ -88,16 +88,31 @@ public class ExpRecordController {
 		er.setT2(et2s.getByName(er.getT2().getName()));
 		// set invoice
 		String invNum = er.getInvoiceNum();
+		if(invNum != null) {invNum = invNum.trim();}
+		Invoice inv = null;
 		if(invNum != null && ! invNum.isEmpty()) {
-			Invoice inv = invs.getByUniqueString("sn", invNum);
+			inv = invs.getByUniqueString("sn", invNum);
 			if(inv == null) {
 				inv = new Invoice();
-				inv.copyFrom(er);
+				// 在保存发票之前，由于 Invoice 对象里面反过来也引用了这个 ExpRecord 对象，因此要先临时保存一下这个 Invoice 对象
+				inv.setSn(invNum);
+				inv.setDescription(er.getSummary());
+				inv.setDate(er.getDate());
+				inv.setIssuer(er.getSupplierName());
+				inv.setAmount(er.getAmount());
+				inv.setOriginal(true);
+				invs.save(inv);
 			//TODO: 把支出类型与财务类型匹配
 			}
 			er.getInvoiceSet().add(inv);
 		}
 		ers.save(er);
+		if(inv != null) {
+			// 保存了本 ExpRecord 记录之后，在更新相应的 Invoice 信息，然后保存到数据库里
+//			inv = invs.getByUniqueString("sn", invNum); // 必须要先从数据库里读出一次，再修改才算是更新
+//			inv.copyFrom(er);
+//			invs.update(inv);
+		}
 		return "redirect:/finance/expense/list";
 	}
 

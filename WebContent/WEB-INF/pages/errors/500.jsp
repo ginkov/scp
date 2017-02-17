@@ -7,35 +7,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>后台错误</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/Endless1.5.1/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/Endless-1.5.1/bootstrap/css/bootstrap.min.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/Endless-1.5.1/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/Endless-1.5.1/bootstrap/js/bootstrap.min.js"></script>
 </head>
-<body>
-<div class="container" style="margin-top: 80px;">
-<h3><a href="${pageContext.request.contextPath}/"><img alt="真是抱歉!" src="${pageContext.request.contextPath}/static/img/sorry.png" style="width:120px;"></a><span class="label label-default">非常抱歉，后台出错了！点我返回...</span> </h3>
 
-<br>
-<table class="table">
-	<tr>
-		<td width="20%"><b>错误:</b></td>
-		<td>${pageContext.exception}</td>
-	</tr>
-	<tr>
-		<td><b>URI:</b></td>
-		<td>${pageContext.errorData.requestURI}</td>
-	</tr>
-	<tr>
-		<td><b>状态代码:</b></td>
-		<td>${pageContext.errorData.statusCode}</td>
-	</tr>
-	<tr>
-		<td><b>错误追溯:</b></td>
-		<td>
+<body>
+<div class="container text-center" style="margin-top: 60px;">
+	<h2><span class="text-default">500</span> <span class="text-success">抱歉，系统内部出错了</span></h2>
+	<p><a href="${pageContext.request.contextPath}/"><i class='fa fa-2x fa-home'></i></a></p>
+	<div class='row'>
+		<div class='col-md-2 text-right'>错误:</div>
+		<div class='col-md-10'>${pageContext.exception}</div>
+	</div>
+	<div class='row'>
+		<div class='col-md-2 text-right'>链接:</div>
+		<div class='col-md-10'>${pageContext.errorData.requestURI}</div>
+	</div>
+	<div class='row'>
+		<div class='col-md-2 text-right' onclick="show()">详情:</div>
+		<div class='col-md-10' id='divDetail'>
 			<c:forEach var="trace" items="${pageContext.exception.stackTrace}">
 				<p>${trace}</p>
-			</c:forEach>
-		</td>
-	</tr>
-</table>
+			</c:forEach>		
+		</div>
+	</div>
 </div>
 </body>
+<script type="text/javascript">
+	function show() {
+		$('#divDetail').toggle();
+	}
+	
+	$(function(){show();});
+</script>
 </html>

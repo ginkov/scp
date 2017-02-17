@@ -25,6 +25,9 @@ public class Role {
 	@Column
 	private String role;
 	
+	@Column
+	private String description;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role_join", joinColumns=@JoinColumn(name="role_id"), inverseJoinColumns=@JoinColumn(name="user_id"))
 	private Set<Staff> staffs;
@@ -55,6 +58,15 @@ public class Role {
 
 	public void setStaffs(Set<Staff> staffs) {
 		this.staffs = staffs;
+	}
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

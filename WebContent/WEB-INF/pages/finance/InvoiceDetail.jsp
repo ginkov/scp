@@ -71,7 +71,10 @@
 		<c:if test="${invoice.used}">
 		<div class="panel-footer">
 			<div class="row" style="font-size: 14px; padding:5px 0; margin:5px 10px;"> 发票/支出匹配
-				<a id="btnDetach" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/invoice/detach/${invoice.id}"/>" style="width: 100px;"><i class="fa fa-random"></i> 解除匹配</a>
+				<a id="btnDetach" class="btn btn-default btn-sm pull-right" 
+					href="<c:url value="/finance/invoice/detach/${invoice.id}"/>" style="width: 100px;">
+					<i class="fa fa-random"></i> 解除匹配
+				</a>
 			</div>
 			<div class="row" style="text-align:center; padding:4px 10px 2px 10px; margin: 0 10px; background-color: #eee;
 					border-bottom: 0.5px solid #ddd; border-radius: 3px;">

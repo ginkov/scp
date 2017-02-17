@@ -1,30 +1,28 @@
 package com.jiayun.scp.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class StaffForm {
 	
 	private String name;
 	private String description;
 	private String pass;
-	private boolean isUser;
-	private boolean isAdmin;
+	private Set<String> roles;
+
 
 	public StaffForm() {
 		pass = "123456";
-		isUser = true;
-		isAdmin = false;
+		roles = new HashSet<String>();
 	}
 	
 	public StaffForm(Staff s) {
 		name = s.getName();
 		description = s.getDescription();
 		pass = s.getPass_md5();
-		for(Role l : s.getRoles()) {
-			if("ROLE_USER".equals(l.getRole())) {
-				isUser = true;
-			}
-			if("ROLE_ADMIN".equals(l.getRole())) {
-				isAdmin = true;
-			}
+		roles = new HashSet<String>();
+		for(Role r: s.getRoles()) {
+			roles.add(r.getRole());
 		}
 	}
 
@@ -52,20 +50,12 @@ public class StaffForm {
 		this.pass = pass;
 	}
 
-	public boolean getIsUser() {
-		return isUser;
+	public Set<String> getRoles() {
+		return roles;
 	}
 
-	public void setIsUser(boolean isUser) {
-		this.isUser = isUser;
-	}
-
-	public boolean getIsAdmin() {
-		return isAdmin;
-	}
-
-	public void setIsAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 
 }

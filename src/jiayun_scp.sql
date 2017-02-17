@@ -32,10 +32,10 @@ create table customers(
 	contact_name varchar(255),
 	reg_date date,
 	-- list of addresses
-	phone_1 varchar(255),
-	phone_2 varchar(255),
-	phone_3 varchar(255),
-	phone_4 varchar(255),
+	phone_1 varchar(255) default '',
+	phone_2 varchar(255) default '',
+	phone_3 varchar(255) default '',
+	phone_4 varchar(255) default '',
 	description varchar(1024),
 	name_and_phone varchar(255) not null unique,
 	foreign key(org_type_id) references org_type(id)
@@ -206,7 +206,7 @@ create table year_order(
 create table user(
 	id int unsigned auto_increment primary key,
 	name varchar(255) not null unique,
-	description varchar(255), 
+	description varchar(255) not null unique, 
 	pass_md5 varchar(255)
 );
 
@@ -229,6 +229,7 @@ insert into user values(3, 'dsy', '杜淑媛', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m
 insert into user values(4, 'yc', '杨春', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5FpIMYQdAjmNKVM3totzdGCErC/u');
 insert into user values(5, 'yx', '尹欣', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5FpIMYQdAjmNKVM3totzdGCErC/u');
 insert into role values(1, 'ROLE_SUPER'),(2,'ROLE_ADMIN'),(3,'ROLE_USER');
+insert into role values(4, 'ROLE_SALES'),(5,'ROLE_PRODUCT'),(6,'ROLE_FINANCE');
 insert into user_role_join values(1,1),(1,2),(1,3);
 insert into user_role_join values(2,2),(2,3);
 insert into user_role_join values(3,2),(3,3);

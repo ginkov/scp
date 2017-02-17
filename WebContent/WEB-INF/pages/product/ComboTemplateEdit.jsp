@@ -92,11 +92,11 @@ for(var i=0; i<len; i++) {
 }
 function showhide(id){
 	if(hide[id]){
-		$("#detail"+id).show();
+		$("#detail"+id).show('fast');
 		hide[id] = 0;
 	}
 	else {
-		$("#detail"+id).hide();
+		$("#detail"+id).hide('fast');
 		hide[id] = 1;
 	}
 }

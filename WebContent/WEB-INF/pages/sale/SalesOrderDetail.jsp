@@ -9,9 +9,9 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" style="font-size:14px; height:52px;">
 				<a href="<c:url value="/sale/order/list"/>" class="glink">订单列表</a> / ${order.sn}<span id="pPhynetMsg"></span>
-			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
-				<a style="width:100px;" class="btn btn-default btn-sm pull-right" href="<c:url value="/sale/order/edit/${order.id}"/>"><i class="fa fa-pencil"></i> 修改</a>
-				<button style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 删除</button>
+			    <sec:authorize access="hasAnyRole('SALES','SUPER')">
+					<a style="width:100px;" class="btn btn-default btn-sm pull-right" href="<c:url value="/sale/order/edit/${order.id}"/>"><i class="fa fa-pencil"></i> 修改</a>
+					<button style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 删除</button>
 				</sec:authorize>
 		</div>
 		<div class="panel-body form-horizontal">

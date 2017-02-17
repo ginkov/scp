@@ -7,7 +7,7 @@
 	<div class="panel panel-default">
 			<div class="panel-heading"  style="height:52px;">
 				<span style="font-size:18px;">部件列表 </span>
-			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+			    <sec:authorize access="hasAnyRole('PRODUCT','SUPER')">
 				<a href="<c:url value="/product/part_upload/select"/>" style="padding-left:15px;" class="glink">批量导入</a>
 				<a class="btn btn-success btn-sm pull-right" href="<c:url value="/product/part/input"/>" style="margin-right:15px; width: 100px;">
 						添加部件 <i class="fa fa-cube"></i>
@@ -24,7 +24,6 @@
 							<th class="text-right">列表价</th>
 							<th class="text-right">上线时间</th>
 							<th class="text-right">下线时间</th>
-							<!-- <th style="width:15px;"></th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -37,9 +36,6 @@
 							<td class="text-right"><fmt:setLocale value="zh_CN" scope="session"/><fmt:formatNumber type="currency" value="${part.listprice}" />
 							<td style="text-align:right;"><fmt:formatDate value="${part.onlineDate}" pattern="yyyy-MM-dd"/>
 							<td style="text-align:right;"><fmt:formatDate value="${part.offlineDate}" pattern="yyyy-MM-dd"/>
-							<%-- 
-							<td><a href="del/${pm.id}"><i class="fa fa-trash"></i></a> 
-							--%>
 						</tr>
 					</c:forEach>
 					</tbody>
