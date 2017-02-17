@@ -1,6 +1,7 @@
 package com.jiayun.scp.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -167,6 +168,7 @@ public class FrRpt {
 				frWeeksCompressed.add(frWeek);
 			}
 		}
+		Collections.reverse(frWeeksCompressed);
 	}
 	
 	private long roundToDay(long t) {
