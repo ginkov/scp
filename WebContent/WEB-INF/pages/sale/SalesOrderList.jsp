@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:setLocale value="zh_CN" scope="session"/>
 <div class="padding-md">
 	<div class="panel panel-default">
 			<div class="panel-heading" style="height: 68px;">
-				<span style="font-size: 18px;">订单列表</span> 
-				<a href="<c:url value="/sale/order_upload/select"/>" style="padding-left:15px;" class="glink">批量导入</a>
-				<a class="btn btn-success btn-lg pull-right" href="<c:url value="/sale/order/input"/>" style="margin-right:5px; width: 100px;">
+				<span style="font-size: 18px;">订单列表</span>
+				<sec:authorize access="hasAnyRole('PRODUCT','SUPER')">
+					<a href="<c:url value="/sale/order_upload/select"/>" style="padding-left:15px;" class="glink">批量导入</a>
+					<a class="btn btn-success btn-lg pull-right" href="<c:url value="/sale/order/input"/>" style="margin-right:5px; width: 100px;">
 						<i class="fa fa-plus"></i> 新订单
-				</a>
+					</a>
+				</sec:authorize>
 			</div>
 			<div class="panel-body">
 				<%-- 引入订单列表模板 --%>
@@ -31,7 +34,7 @@
     	, "pageLength": 25
     	, "order": [[ 3, "desc" ]]
     	, orderClasses : false
-    	, columnDefs: [{targets:[7], orderable: false }]
+    	, columnDefs: [{targets:[5], orderable: false }]
 	});
     if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
  });

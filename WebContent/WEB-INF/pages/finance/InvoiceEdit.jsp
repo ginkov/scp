@@ -74,32 +74,7 @@
 		</div> <!-- /Panel body -->
 
 		<c:if test="${invoice.used}">
-		<div class="panel-footer">
-			<button id="btnDel" style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" 
-				data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 解除匹配</button>
-			<div class="row" style="padding: 5px 0; border-bottom: 0.5px solid #ddd;">
-				<div class="col-md-5">
-					<c:forEach items="${il}" var="inv">
-					<div class="row">
-						<div class="col-md-3" style="text-align:center;"><a class="glink" href="${pageContext.request.contextPath}/finance/invoice/detail/${inv.id}">${inv.sn}</a></div>
-						<div class="col-md-2 no-overflow">${fr.type}</div>
-						<div class="col-md-4 no-overflow">${fr.description}</div>
-						<div class="col-md-3" style="text-align:right;"><fmt:formatNumber value="${inv.amount}" type="currency"/></div>
-					</div>
-					</c:forEach>
-				</div>
-				<div class="col-md-2" style="text-align:center;">---</div>
-				<div class="col-md-5">
-					<c:forEach items="${el}" var="exp">
-					<div class="row">
-						<div class="col-md-3" style="text-align:center;"><a class="glink" href="${pageContext.request.contextPath}/finance/expense/detail/${exp.id}">${exp.sn}</a></div>
-						<div class="col-md-2 no-overflow text-danger">${exp.t2.name}</div>
-						<div class="col-md-4 no-overflow text-danger">${exp.summary}</div>
-						<div class="col-md-3 text-danger" style="text-align:right;"><fmt:formatNumber value="${exp.amount}" type="currency"/></div>
-					</div>
-					</c:forEach>
-				</div>
-			</div>				
+		<div class="panel-footer">		
 		</div><!-- panel-footer -->
 		</c:if>
 	</div> <!-- /Panel -->

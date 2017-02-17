@@ -8,7 +8,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" style="font-size:14px; height:52px;">
 			<span><a href="<c:url value="/product/part/list"/>" class='glink'>产品部件</a> / 详情 </span>
-			<sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+			<sec:authorize access="hasAnyRole('PRODUCT','SUPER')">
 				<a class="btn btn-default btn-sm pull-right" href="<c:url value="/product/part/edit/${ps.id}"/>" style="width: 100px;"><i class="fa fa-pencil"></i> 修改</a>
 				<button style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 删除</button>
 			</sec:authorize>

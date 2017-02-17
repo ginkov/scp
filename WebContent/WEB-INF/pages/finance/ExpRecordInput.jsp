@@ -24,7 +24,7 @@
 					<div class="col-md-2">
 						<form:select id="staff" cssClass="chosen-select" path="staff.name" data-placeholder="请选择" required="true">
 							<form:option value="" label=""/>
-							<form:options items="${staffs}" itemLabel="name" itemValue="name"/>
+							<form:options items="${staffs}" itemLabel="description" itemValue="name"/>
 						</form:select>
 					</div>
 				</div>

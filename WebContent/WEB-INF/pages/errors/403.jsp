@@ -5,16 +5,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>找不到网页</title>
+<title>权限不够</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/Endless1.5.1/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container text-center" style="margin-top: 160px;">
-	<h2><span class='text-default'>404</span> <span class='text-success'>找不到页面</span></h2>
+<div class="container text-center" style="margin-top: 80px;">
+	<h2>403 权限不足</h2>
 	<p>
 		<a href="${pageContext.request.contextPath}/">
-			<i class='fa fa-2x fa-home'></i>
+			<i class='fa fa-2x fa-home'></i>	
 		</a>
 	</p>
 </div>

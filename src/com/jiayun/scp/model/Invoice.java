@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,9 +56,6 @@ public class Invoice {
 			inverseJoinColumns=@JoinColumn(name="expense_id"))
 	private Set<ExpRecord> erSet;
 	
-	@Transient
-	private boolean used;
-	
 	
 	public Invoice() {
 		date = new Date();
@@ -67,7 +63,6 @@ public class Invoice {
 		type = InvoiceType.EXPENSE;
 		erSet = new HashSet<ExpRecord>();
 		original = false;
-		used = false;
 	}
 	
 	public final void clearErSet() {
@@ -157,10 +152,7 @@ public class Invoice {
 	}
 
 	public boolean isUsed() {
-		if(erSet.size()>0) {
-			this.used = true;
-		}
-		return used;
+		return (erSet.size()>0);
 	}
 
 	/* (non-Javadoc)

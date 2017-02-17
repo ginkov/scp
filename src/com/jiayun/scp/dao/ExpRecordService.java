@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jiayun.scp.model.ExpRecord;
 
-//@Service
-//@Configuration
 @Repository("ers")
 public class ExpRecordService implements DaoService<ExpRecord> {
 
@@ -63,10 +61,4 @@ public class ExpRecordService implements DaoService<ExpRecord> {
 	public ExpRecord del(ExpRecord t) {
 		return dao.del(t);
 	}
-/*	
-	@Bean
-	public ExpRecordService ers() {
-		return new ExpRecordService();
-	}
-*/
 }

@@ -116,6 +116,7 @@
 			    </li>
 
 			    <!-- 客户-->
+			    <sec:authorize access="hasAnyRole('SALES','SUPER')">
 			    <li>
 				    <a href="<c:url value="/customer/customer/list"/>">
 					    <span class="menu-icon"> <i class="fa fa-heart"></i> </span>
@@ -123,6 +124,7 @@
 					    <span class="menu-hover"></span>
 				    </a>
 			    </li>
+			    </sec:authorize>
 
 				<!-- 财务 -->				
 				<li class="openable">
@@ -139,7 +141,6 @@
 				</li>
 
 			    <!-- 管理 -->
-			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
 			    <li class="openable">
 			    	<a href='#'>
 						<span class="menu-icon"> <i class="fa fa-cog"></i> </span>
@@ -147,6 +148,7 @@
 						<span class="menu-hover"></span>
 			    	</a>	
 			    	<ul class="submenu">
+						<sec:authorize access="hasAnyRole('SALES','SUPER')">
 			    		<li class="openable">
 			    			<a href='#'> <span class="submenu-label">客户</span> </a>
 			    			<ul class="submenu third-level">
@@ -154,6 +156,8 @@
 								<li> <a href="<c:url value="/customer/orgtype/list"/>"> <span class="submenu-label">组织类型</span> </a> </li>
 			    			</ul>
 			    		</li>
+			    		</sec:authorize>
+						<sec:authorize access="hasAnyRole('PRODUCT','SUPER')">
 			    		<li class="openable">
 			    			<a href='#'> <span class="submenu-label">产品</span> </a>
 			    			<ul class="submenu third-level">
@@ -161,16 +165,20 @@
 								<li> <a href="<c:url value="/product/comboTemplate/list"/>"> <span class="submenu-label">套装模板</span> </a> </li>
 			    			</ul>
 			    		</li>
+			    		</sec:authorize>
+						<sec:authorize access="hasAnyRole('FINANCE','SUPER')">
 			    		<li class="openable">
 			    			<a href='#'><span class="submenu-label">财务</span></a>
 			    			<ul class="submenu third-level">
 								<li> <a href="<c:url value="/finance/exptype/list"/>"> <span class="submenu-label">支出类型</span> </a> </li>
 			    			</ul>
 			    		</li>
+			    		</sec:authorize>
+						<sec:authorize access="hasAnyRole('ADMIN','SUPER')">
 						<li> <a href="<c:url value="/staff/list"/>"><span class="submenu-label">系统</span></a></li>
+						</sec:authorize>
 			    	</ul>
 			    </li>
-			    </sec:authorize>
 		    </ul>
     </div>
     </aside>

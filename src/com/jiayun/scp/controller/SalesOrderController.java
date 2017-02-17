@@ -1,6 +1,7 @@
 package com.jiayun.scp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.jiayun.scp.dao.DaoService;
 import com.jiayun.scp.model.Customer;
 import com.jiayun.scp.model.OrderItem;
+import com.jiayun.scp.model.PayStatus;
 import com.jiayun.scp.model.ProdC1;
 import com.jiayun.scp.model.ProdSelling;
 import com.jiayun.scp.model.SalesOrder;
@@ -214,6 +216,15 @@ public class SalesOrderController {
 		return REDIR_ORDER_LIST;
 	}
 	
+	@RequestMapping("/fullpay/{id}")
+	public String fullpay(@PathVariable int id) {
+		//TODO: only FINANCE people can do this.
+		SalesOrder so = sos.getById(id);
+		so.setPayStatus(PayStatus.PAID);
+		so.setPayDate(new Date());
+		sos.save(so);
+		return REDIR_ORDER_LIST;
+	}
 
 	private void updateUserSaleType(SalesOrder order) {
 		int utid = order.getUserSaleType().getId();

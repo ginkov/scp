@@ -5,9 +5,11 @@
 	<div class="panel panel-default">
 			<div class="panel-heading" style="font-size:14px; height:52px;">
 				员工列表 <span id="pPhynetMsg"></span>
+				<sec:authorize access="hasAnyRole('ADMIN','SUPER')">
 				<a class="btn btn-success btn-sm pull-right" href="<c:url value="/staff/input"/>" style="margin-right:5px; width: 100px;">
 						<i class="fa fa-plus"></i> 添加
 				</a>
+				</sec:authorize>
 			</div>
 			<div class="panel-body">
 				<table class="table table-striped table-hover" id="staff">
@@ -16,7 +18,7 @@
 							<th>账户</th>
 							<th>姓名或昵称</th>
 							<th>权限</th>
-						    <sec:authorize access="hasRole('SUPER')">
+						    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
 						    	<th style="width: 15px;"></th>
 						    	<th style="width: 15px;"></th>
 						    </sec:authorize>
@@ -29,11 +31,11 @@
 							<td>${s.description}
 							<td>
 								<c:forEach items="${s.roles}" var="r">
-									${r.role} &nbsp; &nbsp;
+									${r.description} &nbsp; &nbsp;
 								</c:forEach>
-						    <sec:authorize access="hasRole('SUPER')">
-						    	<td><a href="<c:url value="/staff/edit/${s.id}"/>"><i class="fa fa-pencil"></i></a>
-						    	<td><a href="<c:url value="/staff/del/${s.id}"/>"><i class="fa fa-trash"></i></a>
+						    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+						    	<td><a href="<c:url value="/staff/edit/${s.id}"/>"><i class="fa fa-pencil glink"></i></a>
+						    	<td><a href="<c:url value="/staff/del/${s.id}"/>"><i class="fa fa-trash glink"></i></a>
 						    </sec:authorize>
 						</tr>
 					</c:forEach>
