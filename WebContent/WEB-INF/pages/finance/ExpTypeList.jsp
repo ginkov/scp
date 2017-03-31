@@ -7,7 +7,7 @@
 	<div class="panel panel-default">
 			<div class="panel-heading" style="font-size:14px; height:52px;">
 				支出类型
-			    <sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+			    <sec:authorize access="hasAnyRole('FINANCE','SUPER')">
 				<a class="btn btn-success btn-sm pull-right" href="#" data-toggle="modal" data-target="#modalExpT1New" style="margin-right:5px; width: 100px;">
 					<i class="fa fa-plus"></i> 添加
 				</a>
