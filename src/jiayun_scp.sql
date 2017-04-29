@@ -212,8 +212,17 @@ create table user(
 
 create table role(
 	id int unsigned auto_increment primary key,
-	role varchar(255) not null unique
+	role varchar(255) not null unique,
+	description varchar(255) not null unique
 );
+
+insert into role values
+(1, 'ROLE_SUPER', '超级用户'),
+(2, 'ROLE_ADMIN', '管理员'),
+(3, 'ROLE_USER' , '普通用户'),
+(4, 'ROLE_SALES', '销售'),
+(5, 'ROLE_PRODUCT','产品管理'),
+(6, 'ROLE_FINANCE', '财务管理');
 
 create table user_role_join(
 	user_id int unsigned not null,
@@ -228,8 +237,7 @@ insert into user values(2, 'zhs', '周帅', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5Fp
 insert into user values(3, 'dsy', '杜淑媛', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5FpIMYQdAjmNKVM3totzdGCErC/u');
 insert into user values(4, 'yc', '杨春', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5FpIMYQdAjmNKVM3totzdGCErC/u');
 insert into user values(5, 'yx', '尹欣', '$2a$10$FN.YE8JM66/Awp8AjKuV5eA2m5FpIMYQdAjmNKVM3totzdGCErC/u');
-insert into role values(1, 'ROLE_SUPER'),(2,'ROLE_ADMIN'),(3,'ROLE_USER');
-insert into role values(4, 'ROLE_SALES'),(5,'ROLE_PRODUCT'),(6,'ROLE_FINANCE');
+
 insert into user_role_join values(1,1),(1,2),(1,3);
 insert into user_role_join values(2,2),(2,3);
 insert into user_role_join values(3,2),(3,3);

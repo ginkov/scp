@@ -20,5 +20,12 @@ public class IndexController {
 	public String index(Model model) {
 		return "login";
 	}
+	
+	@RequestMapping("/indexM")
+	public String indexM(Model model) {
+		model.addAttribute("pageTitle","佳耘 SCP");
+		model.addAttribute("pageContent", "indexM");
+		return "mainpageM";
+	}
 
 }

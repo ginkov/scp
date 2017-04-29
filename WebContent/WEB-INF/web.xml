@@ -72,6 +72,15 @@
 	</servlet-mapping>
   
 	<servlet>
+    	<servlet-name>loginM.jsp</servlet-name>
+    	<jsp-file>/WEB-INF/pages/loginM.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>loginM.jsp</servlet-name>
+    	<url-pattern>/loginM</url-pattern>
+	</servlet-mapping>
+  
+	<servlet>
     	<servlet-name>logout.jsp</servlet-name>
     	<jsp-file>/WEB-INF/pages/logout.jsp</jsp-file>
 	</servlet>

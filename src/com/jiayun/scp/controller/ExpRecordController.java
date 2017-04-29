@@ -53,17 +53,23 @@ public class ExpRecordController {
 	private ExpRecordUtil erUtil;
 	
 	@RequestMapping(value = {"/list"})
-	public String list(Model model) {
+	public String list(Model model, HttpServletRequest hsr) {
 		List<ExpRecord> l = ers.getAll();
 		model.addAttribute("totalExp", getTotalExpense(l));
 		model.addAttribute("ers", l);
 		model.addAttribute("pageTitle","支出列表");
-		model.addAttribute("pageContent", "finance/ExpRecordList");
-		return "mainpage";	
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		
+		model.addAttribute("pageContent", "finance/ExpRecordList"+mobileSuffix);
+		return "mainpage"+mobileSuffix;	
 	}
 	
 	@RequestMapping("/input")
-	public String input(Model model, @ModelAttribute ExpRecord er) {
+	public String input(Model model, @ModelAttribute ExpRecord er, HttpServletRequest hsr) {
 		if(er.getSn()==null || er.getSn().isEmpty()) {
 			String sn = erUtil.genSN();
 			er.setSn(sn);
@@ -74,12 +80,18 @@ public class ExpRecordController {
 		model.addAttribute("staffs", getNormalStaffList());
 		model.addAttribute("er", er);
 		model.addAttribute("pageTitle","新订单");
-		model.addAttribute("pageContent", "finance/ExpRecordInput");
-		return "mainpage";
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		
+		model.addAttribute("pageContent", "finance/ExpRecordInput"+mobileSuffix);
+		return "mainpage"+mobileSuffix;
 	}
 	
 	@RequestMapping("/save")
-	public String save(ExpRecord er) {
+	public String save(ExpRecord er, HttpServletRequest hsr) {
 		// set staff
 		Staff s = ss.getByName(er.getStaff().getName());
 		er.setStaff(s);
@@ -113,11 +125,17 @@ public class ExpRecordController {
 //			inv.copyFrom(er);
 //			invs.update(inv);
 		}
-		return "redirect:/finance/expense/list";
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		
+		return "redirect:/finance/expense/list"+mobileSuffix;
 	}
 
 	@RequestMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable int id) {
+	public String detail(Model model, @PathVariable int id, HttpServletRequest hsr) {
 		ExpRecord er = ers.getById(id);
 		model.addAttribute("er",er);
 
@@ -134,12 +152,18 @@ public class ExpRecordController {
 		model.addAttribute("il", il);
 		model.addAttribute("el", el);
 		model.addAttribute("pageTitle","支出详情");
-		model.addAttribute("pageContent", "finance/ExpRecordDetail");
-		return "mainpage";
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		
+		model.addAttribute("pageContent", "finance/ExpRecordDetail"+mobileSuffix);
+		return "mainpage"+mobileSuffix;
 	}
 	
 	@RequestMapping("/detach/{id}")
-	public String detach(@PathVariable int id) {
+	public String detach(@PathVariable int id, HttpServletRequest hsr) {
 		ExpRecord er = ers.getById(id);
 		Set<Invoice>   il = er.getInvoiceSet();
 		Set<ExpRecord> el = il.iterator().next().getErSet();
@@ -156,15 +180,20 @@ public class ExpRecordController {
 	}
 	
 	@RequestMapping("/edit/{id}")
-	public String edit(Model model, @PathVariable int id) {
+	public String edit(Model model, @PathVariable int id, HttpServletRequest hsr) {
 		Gson gson = new Gson();
 		model.addAttribute("t1names", gson.toJson(getT1Names()));
 		model.addAttribute("t2names", gson.toJson(getT2Names()));
 		model.addAttribute("staffs", getNormalStaffList());
 		model.addAttribute("er",ers.getById(id));
 		model.addAttribute("pageTitle","修改支出记录");
-		model.addAttribute("pageContent", "finance/ExpRecordEdit");
-		return "mainpage";
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		model.addAttribute("pageContent", "finance/ExpRecordEdit"+mobileSuffix);
+		return "mainpage"+mobileSuffix;
 	}
 	
 
@@ -201,7 +230,13 @@ public class ExpRecordController {
 		else {
 			ra.addFlashAttribute("err", "只有记录人才能修改本条记录");
 		}
-		return "redirect:/finance/expense/list";
+		
+		String mobileSuffix = "";
+		if(request.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		
+		return "redirect:/finance/expense/list"+mobileSuffix;
 	}
 	
 	@RequestMapping("/del/{id}")
@@ -214,7 +249,13 @@ public class ExpRecordController {
 		else {
 			ra.addFlashAttribute("err","只有记录人才能删除本记录");
 		}
-		return "redirect:/finance/expense/list";
+		
+		String mobileSuffix = "";
+		if(request.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		
+		return "redirect:/finance/expense/list"+mobileSuffix;
 	}
 
 	private List<Staff> getNormalStaffList(){

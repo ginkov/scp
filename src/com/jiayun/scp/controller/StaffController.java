@@ -35,7 +35,7 @@ public class StaffController {
 	private DaoService<Role> rs;
 	
 	@RequestMapping("/passwd/change")
-	public String passwordChangeInput(Model model, Principal p) {
+	public String passwordChangeInput(Model model, Principal p, HttpServletRequest hsr) {
 		StaffChangePasswordForm scpf = new StaffChangePasswordForm();
 		String staffName = p.getName();
 		Staff s = ss.getByName(staffName);
@@ -43,8 +43,14 @@ public class StaffController {
 		model.addAttribute("staffChangePasswordForm", scpf);
 		model.addAttribute("staffName", p.getName());
 		model.addAttribute("pageTitle","修改密码");
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		
 		model.addAttribute("pageContent", "staff/PasswordChange");
-		return "mainpage";
+		return "mainpage"+mobileSuffix;
 	}
 
 	@RequestMapping("/passwd/submit")

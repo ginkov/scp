@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -59,17 +61,32 @@ public class SalesOrderController {
 	@Autowired
 	private SalesOrderUtil soUtil;
 
+	/**
+	 * 查看订单列表.
+	 * 同时，对于 PC 版，作为登陆后的主页. (手机版有单独的主页, indexM).
+	 * @param model
+	 * @param hsr
+	 * @return
+	 * 
+	 */
 	@RequestMapping(value = {"/list", "index"})
-	public String list(Model model) {
+	public String list(Model model, HttpServletRequest hsr) {
+
 		List<SalesOrder> l = sos.getAll();
 		model.addAttribute("orders", l);
 		model.addAttribute("pageTitle","订单列表");
-		model.addAttribute("pageContent", "sale/SalesOrderList");
-		return "mainpage";	
+
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+
+		model.addAttribute("pageContent", "sale/SalesOrderList"+mobileSuffix);
+		return "mainpage"+mobileSuffix;	
 	}
 	
 	@RequestMapping("/input")
-	public String input(Model model, @ModelAttribute SalesOrder order) {
+	public String input(Model model, @ModelAttribute SalesOrder order, HttpServletRequest hsr) {
 /*
  *  	We need customer, userSaleType, and ProdSelling information during creating a new order.
  */
@@ -103,25 +120,33 @@ public class SalesOrderController {
 		
 		order.removeEmptyItems();
 		order.updatePriceAndDiscount();
+		order.getItems().add(new OrderItem());
 		model.addAttribute("order", order);
 		model.addAttribute("pageTitle","新订单");
-		model.addAttribute("pageContent", "sale/SalesOrderInput01");
-		return "mainpage";
+		
+		String mobilePageSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobilePageSuffix = "M";
+		}
+		model.addAttribute("pageContent", "sale/SalesOrderInput"+mobilePageSuffix);
+		return "mainpage"+mobilePageSuffix;
 	}
 	
 	
 	@RequestMapping("/save")
 	@Transactional
-	public String save(Model model, @ModelAttribute SalesOrder order, BindingResult br) {
+	public String save(Model model, @ModelAttribute SalesOrder order, BindingResult br, HttpServletRequest hsr) {
 		if(br.hasErrors()) {
-//			List<FieldError> fel = br.getFieldErrors();
-//			for(FieldError fe: fel) {
-//				System.out.println("Error code = "+fe.getCode()+", object = "+fe.getObjectName()+", field = "+fe.getField());
-//			}
 			model.addAttribute("pageTitle","新订单");
-			model.addAttribute("pageContent", "sale/SalesOrderInput01");
+			model.addAttribute("pageContent", "sale/SalesOrderInput");
 			return "mainpage";
 		}
+		
+		String mobilePageSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobilePageSuffix = "?mobile";
+		}
+		
 		Session session = sf.getCurrentSession();
 		Customer c = getCustomerByInfo(session, order.getCustomer().getNameAndPhone());
 		order.setCustomer(c);
@@ -131,21 +156,25 @@ public class SalesOrderController {
 		updateItemProdSelling(order);
 		order.updateProductSummary();
 		sos.save(order);
-		return REDIR_ORDER_LIST;
+		return REDIR_ORDER_LIST + mobilePageSuffix;
 	}
 	
 	@RequestMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable int id) {
+	public String detail(Model model, @PathVariable int id, HttpServletRequest hsr) {
 		SalesOrder order = sos.getById(id);
-
 		model.addAttribute("order", order);
 		model.addAttribute("pageTitle","订单详情");
-		model.addAttribute("pageContent", "sale/SalesOrderDetail");
-		return "mainpage";
+
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		model.addAttribute("pageContent", "sale/SalesOrderDetail"+mobileSuffix);
+		return "mainpage"+mobileSuffix;
 	}
 	
 	@RequestMapping("/edit/{id}")
-	public String edit(Model model, @ModelAttribute SalesOrder order, @PathVariable int id) {
+	public String edit(Model model, @ModelAttribute SalesOrder order, @PathVariable int id, HttpServletRequest hsr) {
 		if(order.getItems().isEmpty()) {
 			order = sos.getById(id);
 		}
@@ -182,14 +211,19 @@ public class SalesOrderController {
 		order.updatePriceAndDiscount();
 		model.addAttribute("order", order);
 		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
+		
 		model.addAttribute("pageTitle","编辑订单");
-		model.addAttribute("pageContent", "sale/SalesOrderEdit");
+		model.addAttribute("pageContent", "sale/SalesOrderEdit"+mobileSuffix);
 
-		return "mainpage";
+		return "mainpage"+mobileSuffix;
 	}
 	
 	@RequestMapping("/update")
-	public String update(@ModelAttribute SalesOrder order) {
+	public String update(@ModelAttribute SalesOrder order, HttpServletRequest hsr) {
 		if(order.getCustomer().getName()==null || order.getCustomer().getName().isEmpty()) {
 			Customer c = cs.getById(order.getCustomer().getId());
 			order.setCustomer(c);	
@@ -206,24 +240,38 @@ public class SalesOrderController {
 				ois.delById(oi.getId());
 			}
 		}
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
 
-		return "redirect:/sale/order/detail/"+order.getId();
+		return "redirect:/sale/order/detail/"+order.getId()+mobileSuffix;
 	}
 	
 	@RequestMapping("/del/{id}")
-	public String del(@PathVariable int id) {
+	public String del(@PathVariable int id, HttpServletRequest hsr) {
 		sos.delById(id);
-		return REDIR_ORDER_LIST;
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		return REDIR_ORDER_LIST+mobileSuffix;
 	}
 	
 	@RequestMapping("/fullpay/{id}")
-	public String fullpay(@PathVariable int id) {
+	public String fullpay(@PathVariable int id, HttpServletRequest hsr) {
 		//TODO: only FINANCE people can do this.
 		SalesOrder so = sos.getById(id);
 		so.setPayStatus(PayStatus.PAID);
 		so.setPayDate(new Date());
 		sos.save(so);
-		return REDIR_ORDER_LIST;
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		return REDIR_ORDER_LIST + mobileSuffix;
 	}
 
 	private void updateUserSaleType(SalesOrder order) {

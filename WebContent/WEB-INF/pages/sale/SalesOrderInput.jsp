@@ -16,7 +16,7 @@
 				<form:hidden path="id" />
 				<form:hidden path="sn" />
 				<div class="form-group" style="margin-top: 15px">
-					<label class="col-md-2 control-label" for="customer">客户 ${order.customer.name}</label>
+					<label class="col-md-2 control-label" for="customer">客户</label>
 					<div class="col-md-4">
 						<form:hidden path="customer.id" id="customerId"/>
 						<form:select id="customer" cssClass="form-control select2" path="customer.nameAndPhone" 

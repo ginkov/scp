@@ -6,6 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
+    <script type="text/javascript">
+    if (screen.width <= 720) {
+    	window.location = "loginM";
+    }
+    else {
+    	document.cookie = "mobile=false";
+    }
+    </script>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/favicon.ico" type="image/x-icon" />
     <link href="${pageContext.request.contextPath}/static/Endless-1.5.1/bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/static/Endless-1.5.1/css/font-awesome.min.css" rel="stylesheet" >
@@ -18,7 +26,7 @@
 		<div class="login-wrapper">
 			<div class="text-center">
 				<h2 style="font-weight:bold">
-					<!-- <span class="text-success">佳耘</span> <span style="color:#ccc; text-shadow:0 1px #fff">销售・客户关系・产品 管理</span> -->
+<!-- 					<span class="text-success">佳耘</span> <span style="color:#ccc; text-shadow:0 1px #fff">销售・客户关系・产品 管理</span> -->
 				</h2>
 			</div>
 			<div class="login-widget animation-delay1">
@@ -27,7 +35,6 @@
 						<div style="margin-left: 10px;">
 							<img src="${pageContext.request.contextPath}/static/img/logo.png" style="height: 35px;">
 						</div>
-
 					</div> <!-- panel heading -->
 
 				<div class="panel-body">

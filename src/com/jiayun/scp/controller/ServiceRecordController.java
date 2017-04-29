@@ -2,6 +2,8 @@ package com.jiayun.scp.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,20 +27,25 @@ public class ServiceRecordController {
 	private DaoService<ServiceRecord> srs;
 
 	@RequestMapping("/edit/{orderId}")
-	public String edit(Model model, @PathVariable int orderId)
+	public String edit(Model model, @PathVariable int orderId, HttpServletRequest hsr)
 	{
 		SalesOrder order = sos.getById(orderId);
 		order.getServiceRecords().add(new ServiceRecord());
 		model.addAttribute("order", order);
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "M";
+		}
 
 		model.addAttribute("pageTitle","编辑服务记录");
-		model.addAttribute("pageContent", "sale/ServiceRecordEdit");
+		model.addAttribute("pageContent", "sale/ServiceRecordEdit"+mobileSuffix);
 
-		return "mainpage";
+		return "mainpage"+mobileSuffix;
 	}
 
 	@RequestMapping("/update")
-	public String update(Model model, @ModelAttribute SalesOrder order) {
+	public String update(Model model, @ModelAttribute SalesOrder order, HttpServletRequest hsr) {
 		List<ServiceRecord> toBeDel = order.removeEmptyServiceRecords();
 		int oid = order.getId();
 		SalesOrder updateOrder = sos.getById(oid);
@@ -52,6 +59,11 @@ public class ServiceRecordController {
 				srs.delById(sr.getId());
 			}
 		}
-		return "redirect:/sale/order/detail/"+oid;
+		
+		String mobileSuffix = "";
+		if(hsr.getParameterMap().containsKey("mobile")) {
+			mobileSuffix = "?mobile";
+		}
+		return "redirect:/sale/order/detail/"+oid+mobileSuffix;
 	}
 }
