@@ -13,25 +13,14 @@
 			<div class="panel-body">
 			<div style="border-bottom: 0.5px solid #ddd; padding-bottom:5px; margin-bottom: 15px;">
 				<span style="font-size: 14px;">本期总支出: <fmt:formatNumber value="${totalExp}" type="currency"/></span>
-
-			<!--  数据分析的部分，以后再考虑
-				<a href="#" style="font-size: 14px; margin-left: 15px;" class="glink" onclick="showBI()"> 数据分析 </a>
-				<span id="spStatus" style="font-size: 14px; font-weight: bold; color: #aaa; margin-left:5px;">收起</span>
 			</div>
-			<div style="height: 300px;" id="divBI">
-				<div class="row" style="padding: 15px;">
-					<button class="col-md-1 btn btn-default btn-xs">类别</button>
-				</div>
-				-->
 
-			</div>
 			<div style="margin: 0;">
-				<table class="table table-striped table-hover" id="expense">
+				<table class="table table-striped table-hover" id="expense" style="font-size: 14px;">
 					<thead>
 						<tr>
 							<th style="text-align:right;">日期</th>
-							<th style="text-align:right;">种类</th>
-							<th style="text-align:right;">商品名</th>
+							<th style="text-align:right;">内容</th>
 							<th style="text-align:right;">金额</th>
 						</tr>
 					</thead>
@@ -42,7 +31,6 @@
 								<a href="<c:url value="/finance/expense/detail/${er.id}?mobile"/>" class="glink">
 									<fmt:formatDate value="${er.date}" pattern='yyyy-MM-dd'/>
 								</a>
-							<td style="text-align:right;">${er.t2.name}
 							<td style="text-align:right;">${er.expName}
 							<td style="text-align:right;"><fmt:formatNumber type="currency" value="${er.amount}"/>
 						</tr>
@@ -58,19 +46,6 @@
 <%@ include file = "/WEB-INF/pages/alert.jsp" %>
 
 <script type="text/javascript">
-var showBI = function(){
-	var status = $('#spStatus').text();
-	console.log(status);
-	if(status =='展开'){
-		$('#divBI').show();	
-		$('#spStatus').text('收起');
-	}
-	else {
-		$('#divBI').hide();
-		$('#spStatus').text('展开');
-	}
-};
-
 $(document).ready(function() {
 	if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
     $('#expense').DataTable({
@@ -81,8 +56,8 @@ $(document).ready(function() {
     	, "pageLength": 10 
     	, "order": [[ 0, "desc" ]]
     	, orderClasses : false
-    	, columnDefs: [{targets:[2], orderable: false }]
+//     	, columnDefs: [{targets:[2], orderable: false }]
 	});
-	showBI();
+// 	showBI();
  });
 </script>

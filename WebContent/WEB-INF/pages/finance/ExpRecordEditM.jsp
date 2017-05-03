@@ -10,7 +10,7 @@
 <div style="display:none;" id="login_helper" data-login='${pageContext.request.userPrincipal.name}'> </div>
 --%>
 
-<div class="padding-md">
+<div class="padding-xs">
 	<form:form modelAttribute="er" name="erForm" cssClass="form-horizontal" action="${pageContext.request.contextPath}/finance/expense/update?mobile" method="post" acceptCharset='utf-8'>
 	<div class="panel panel-default">
 			<div class="panel-heading" style="font-size:14px; height:52px;">

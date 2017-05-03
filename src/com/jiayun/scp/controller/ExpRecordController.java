@@ -9,9 +9,12 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,7 @@ import com.jiayun.scp.model.ExpRecord;
 import com.jiayun.scp.model.ExpT1;
 import com.jiayun.scp.model.ExpT2;
 import com.jiayun.scp.model.Invoice;
+import com.jiayun.scp.model.Role;
 import com.jiayun.scp.model.Staff;
 import com.jiayun.scp.util.ExpRecordUtil;
 
@@ -52,9 +56,37 @@ public class ExpRecordController {
 	@Autowired
 	private ExpRecordUtil erUtil;
 	
+	@SuppressWarnings("unchecked")
+	@Transactional
 	@RequestMapping(value = {"/list"})
 	public String list(Model model, HttpServletRequest hsr) {
-		List<ExpRecord> l = ers.getAll();
+
+		// get current user
+		String username = hsr.getUserPrincipal().getName();
+		Staff user = ss.getByName(username);
+		
+		// whether has FINANCE role
+		boolean isFinance = false;
+		for(Role r: user.getRoles()) {
+			if("ROLE_FINANCE".equals(r.getRole())) {
+				isFinance = true;
+				break;
+			}
+		}
+		
+		List<ExpRecord> l ;
+		if(isFinance) {
+			// 如果在财务组里，显示所有的列表
+			l = ers.getAll();
+		}
+		else {
+			// 如果不在财务组里，只查询 Owner 是自己的
+			Session session = sf.getCurrentSession();
+//			l = session.createCriteria(ExpRecord.class).createAlias("owner", "o")
+//					.createAlias("o.name", "ownername").add(Restrictions.eq("ownername", username)).list();
+			l = session.createCriteria(ExpRecord.class).add(Restrictions.eq("owner", user)).list();
+		}
+		
 		model.addAttribute("totalExp", getTotalExpense(l));
 		model.addAttribute("ers", l);
 		model.addAttribute("pageTitle","支出列表");

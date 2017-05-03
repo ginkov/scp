@@ -8,7 +8,7 @@
 <div style="display:none;" id="t2_helper" data-t2list='${t2names}'> </div>
 <div style="display:none;" id="login_helper" data-login='${pageContext.request.userPrincipal.name}'> </div>
 
-<div class="padding-md">
+<div class="padding-xs">
 	<form:form modelAttribute="er" name="erForm" cssClass="form-horizontal" action="${pageContext.request.contextPath}/finance/expense/save?mobile" method="post" acceptCharset='utf-8'>
 	<div class="panel panel-default">
 			<div class="panel-heading" style="font-size:14px; height:52px;">
@@ -22,8 +22,9 @@
 				<div class="form-group">
 					<label class="col-xs-3 label-xs">付款人</label>
 					<div class="col-xs-8">
-						<form:select id="staff" cssClass="chosen-select" path="staff.name" data-placeholder="请选择" required="true">
-							<form:option value="" label=""/>
+<%-- 						<form:select id="staff" cssClass="chosen-select" path="staff.name" data-placeholder="请选择" required="true"> --%>
+						<form:select id="staff" cssClass="form-control" path="staff.name" data-placeholder="请选择" required="true">
+<%-- 							<form:option value="" label=""/> --%>
 							<form:options items="${staffs}" itemLabel="description" itemValue="name"/>
 						</form:select>
 					</div>
@@ -42,7 +43,8 @@
 				<div class="form-group">
 					<label class="col-xs-3 label-xs" for="t1">类别</label>
 					<div class="col-xs-8">
-						<select id="t1" class="chosen-select" data-placeholder="请选择" required onchange="updateT2()">
+<!-- 						<select id="t1" class="chosen-select" data-placeholder="请选择" required onchange="updateT2()"> -->
+						<select id="t1" class="form-control" data-placeholder="请选择" required onchange="updateT2()">
 						</select>
 					</div>
 				</div>
@@ -50,7 +52,8 @@
 				<div class="form-group">
 					<label class="col-xs-3 label-xs" for="t2">种类</label>
 					<div class="col-xs-8">
-						<form:select id="t2" path="t2.name" cssClass="chosen-select" data-placeholder="请选择" required="true">
+<%-- 						<form:select id="t2" path="t2.name" cssClass="chosen-select" data-placeholder="请选择" required="true"> --%>
+						<form:select id="t2" path="t2.name" cssClass="form-control" data-placeholder="请选择" required="true">
 						</form:select>
 					</div>
 				</div>
@@ -118,7 +121,7 @@ var updateOpts = function(target, opts){
 var updateT2 = function(){
 	var t1 = $('#t1').val();
 	updateOpts('#t2', t2list[t1]);
-	$('#t2').trigger("chosen:updated");
+// 	$('#t2').trigger("chosen:updated");
 }
 
 $().ready(function(){
@@ -127,7 +130,7 @@ $().ready(function(){
 	login  = $('#login_helper').data('login');
 	$('#staff').val(login);
 	updateOpts('#t1', t1list);
-	$('.chosen-select').chosen({"search_contains":true});
+// 	$('.chosen-select').chosen({"search_contains":true});
 	$('.datepicker').datepicker({format: 'yyyy-mm-dd'});
 	if (document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
 });

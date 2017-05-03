@@ -28,15 +28,15 @@
 					</div>
 				</div>
 				<div class="row" style="margin-bottom: 3px;">
-					<div class="glink" data-toggle="collapse" data-target="#divMoreProfile">
+					<div class="glink" data-toggle="collapse" data-target="#divMoreProfile" style="height:30px;">
 						<div class="col-xs-10  col-xs-offset-2 text-center"><i class="fa fa-angle-down fa-2x"></i></div>
 					</div>
 				</div>
-				<div class="collapse" id="divMoreProfile">	
+				<div class="collapse" id="divMoreProfile" style="padding: 10px 0 2px 0;">	
 					<div class="form-group">
 						<label class="col-xs-3 label-xs">营销类型</label>
 						<div class="col-xs-8">
-							<form:select id="userSaleType" cssClass="chosen-nosearch" path="userSaleType.id" data-placeholder="请选择">
+							<form:select id="userSaleType" cssClass="form-control" path="userSaleType.id" data-placeholder="请选择">
 								<form:option label="普通用户" value="3" selected="true"/>
 								<form:options items="${userSaleTypes}" itemLabel="name" itemValue="id" />
 							</form:select>
@@ -60,52 +60,30 @@
 							<form:input id="channelName" cssClass="form-control" path="channelName" style="padding-left:15px;"/>
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-xs-3 label-xs"> 付款状态</label>
+						<div class="col-xs-8">
+						<form:select path="payStatus" value="${payStatus}" cssClass="form-control">
+							<form:option value="UNPAID" label="未付款" selected="true"/>
+							<form:option value="DOWNPAID" label="已付定金"/>
+							<form:option value="PAID" label="已付全款"/>
+						</form:select>
+						</div>
+					</div>
 				</div>
 				<div class="form-group" style="margin-bottom: 3px;">
-					<label class="col-xs-3 label-xs" for="discountPrice"> 实际价格</label>
+					<label class="col-xs-3 label-xs" for="discountPrice"> 总价格</label>
 					<div class="col-xs-8">
-						<div class="input-group">
+ 						<div class="input-group">
 						<span class="input-group-addon">￥</span>
 						<fmt:formatNumber value="${order.discountPrice}" var="discountPrice" pattern=".00"/>
 						<form:input id="discountPrice" cssClass="form-control" path="discountPrice" value="${discountPrice}" readonly="true" />
 						</div>
 					</div>
 				</div>
-				<div class="row" style="margin-bottom: 3px;">
-					<div class="glink" data-toggle="collapse" data-target="#divMorePrice">
-						<div class="col-xs-10  col-xs-offset-2 text-center"><i class="fa fa-angle-down fa-2x"></i></div>
-					</div>
-				</div>
-				<div class="collapse" id="divMorePrice">
-				<div class="form-group">
-					<label class="col-xs-3 label-xs" for="listPrice"> 总列表价</label>
-					<div class="col-xs-8">
-						<div class="input-group">
-						<span class="input-group-addon">￥</span>
-						<fmt:formatNumber value="${order.listPrice}" var="listPrice" pattern=".00"/>
-						<form:input id="listPrice" cssClass="form-control" path="listPrice" value="${listPrice}" readonly="true"/>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-xs-3 label-xs" for="discount"> 整体折扣</label>
-					<div class="col-xs-8">
-						<fmt:formatNumber value="${order.discount}" var="discount" pattern=".00"/>
-						<form:input id="discount" cssClass="form-control" path="discount" value="${discount}" readonly="true" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-xs-3 label-xs"> 付款状态</label>
-					<div class="col-xs-8">
-						<form:select path="payStatus" value="${payStatus}" cssClass="chosen-nosearch">
-							<form:option value="UNPAID" label="未付款" selected="true"/>
-							<form:option value="DOWNPAID" label="已付定金"/>
-							<form:option value="PAID" label="已付全款"/>
-						</form:select>
-					</div>
-				</div>
+				<form:hidden path="discount" value="${discount}"/>
 				<form:hidden path="payDate"/>
-				</div>
+				<form:hidden path="listPrice" value="${order.listPrice}" />
 			</div> <!-- /Panel body -->
 
 			<div class="panel-footer">
@@ -118,7 +96,7 @@
 		 		<div class="form-group">
 		 			<label class="label-xs col-xs-2">产品</label>
 					<div class="col-xs-10">
-						<form:select cssClass="chosen-select" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
+						<form:select cssClass="form-control" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
 							onchange="productChanged(${vs.index})" id='prod${vs.index}' data-id="${vs.index}">
 							<form:option value="" label=""/>
 							<c:forEach var="optGrp" items="${prodOpts}" varStatus="optGrpIndex">

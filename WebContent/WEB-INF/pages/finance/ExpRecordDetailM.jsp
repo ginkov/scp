@@ -8,7 +8,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" style="font-size:14px; height:52px;">
 			<span><a href="<c:url value="/finance/expense/list?mobile"/>" class='glink'>支出</a> / ${er.sn} </span>
-			<sec:authorize access="hasAnyRole('ADMIN','SUPER')">
+			<sec:authorize access="hasAnyRole('ADMIN','SUPER','USER')">
 				<a id="btnEdit" class="btn btn-default btn-sm pull-right" href="<c:url value="/finance/expense/edit/${er.id}?mobile"/>" style="width: 100px;"><i class="fa fa-pencil"></i> 修改</a>
 				<button id="btnDel" style="width:60px; margin-right: 20px;" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash"></i> 删除</button>
 			</sec:authorize>
