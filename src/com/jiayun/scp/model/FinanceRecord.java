@@ -46,6 +46,16 @@ public class FinanceRecord {
 		url = "/sale/order/detail/"+ so.getId();
 	}
 	
+	public void fromNonSalesIncome(NonSalesIncomeRecord r) {
+		date = r.getDate();
+		sn = r.getSn();
+		amount = r.getAmount();
+		action = FinanceAction.INVEST_GOT;
+		description = r.getSummary();
+		type = r.getT2().getName();
+		url = "/finance/nonsalesincome/detail/"+r.getId();
+	}
+	
 	// getters and setters.
 
 	public String getUrl() {

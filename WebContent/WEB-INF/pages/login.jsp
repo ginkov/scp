@@ -53,10 +53,19 @@
 							<input type="password" placeholder="password" class="form-control input-sm" name="password">
 							</div>
 						</div>
+						
+						<div class="form-group">
+<!-- 							<label class="col-sm-2 col-xs-2 col-xs-offset-1 control-label label-checkbox inline"> -->
+							<label class="col-sm-1 col-sm-offset-3 control-label label-checkbox inline">
+								<input type="checkbox" name="_spring_security_remember_me" class="regular-checkbox chk-delete" />
+								<span class="custom-checkbox info"></span>
+							</label>
+							<div style="padding-top:6px;">Remember me</div>
+						</div>
 
 						<hr/>
 
-						<button type="submit" class="btn btn-success btn-md pull-right">登录</button>
+						<button type="submit" class="btn btn-success btn-lg pull-right">登录</button>
 					</form>
 				</div>
 			</div><!-- /panel -->

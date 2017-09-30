@@ -39,7 +39,7 @@
 					<div class="form-group">
 						<label class="col-xs-3 label-xs">营销类型</label>
 						<div class="col-xs-8">
-							<form:select id="userSaleType" cssClass="chosen-nosearch" path="userSaleType.id" data-placeholder="请选择">
+							<form:select id="userSaleType" cssClass="form-control" path="userSaleType.id" data-placeholder="请选择">
 								<form:option label="普通用户" value="3" selected="true"/>
 								<form:options items="${userSaleTypes}" itemLabel="name" itemValue="id" />
 							</form:select>
@@ -101,7 +101,7 @@
 				<div class="form-group">
 					<label class="col-xs-3 label-xs"> 付款状态</label>
 					<div class="col-xs-8">
-						<form:select path="payStatus" value="${payStatus}" cssClass="chosen-nosearch">
+						<form:select path="payStatus" value="${payStatus}" cssClass="form-control">
 							<form:option value="UNPAID" label="未付款" selected="true"/>
 							<form:option value="DOWNPAID" label="已付定金"/>
 							<form:option value="PAID" label="已付全款"/>
@@ -122,7 +122,7 @@
 		 		<div class="form-group">
 		 			<label class="label-xs col-xs-2">产品</label>
 					<div class="col-xs-10">
-						<form:select cssClass="chosen-select" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
+						<form:select cssClass="form-control" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
 							onchange="productChanged(${vs.index})" id='prod${vs.index}' data-id="${vs.index}">
 							<form:option value="" label=""/>
 							<c:forEach var="optGrp" items="${prodOpts}" varStatus="optGrpIndex">
@@ -168,8 +168,8 @@
 			    if(document.getElementById("modalAlert")) { $("#modalAlert").modal("show"); }
 				pricelist = ${pricelist};
 
-				$('.chosen-select').chosen({"search_contains":true});
-				$('.chosen-nosearch').chosen({"disable_search":true});
+//				$('.chosen-select').chosen({"search_contains":true});
+//				$('.chosen-nosearch').chosen({"disable_search":true});
 				$('.datepicker').datepicker({format: 'yyyy-mm-dd'});
 				$('.select2').select2({
 					tags: true,

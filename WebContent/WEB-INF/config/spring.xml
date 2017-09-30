@@ -119,6 +119,7 @@
             default-target-url="/index"
             authentication-success-handler-ref="loginSuccessHandler"
         />
+        <security:remember-me key="jscp"/>
 	</security:http> 
 	<security:authentication-manager>
 		<security:authentication-provider user-service-ref="jiayunUserDetailsService">

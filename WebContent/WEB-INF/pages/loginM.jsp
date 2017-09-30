@@ -42,6 +42,16 @@
 								placeholder="password" style="font-size: 18px;">
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<div class="col-xs-10 col-xs-offset-1">
+							<label class="label-checkbox inline">
+								<input type="checkbox" name="_spring_security_remember_me" class="regular-checkbox chk-delete" />
+								<span class="custom-checkbox info"></span>
+							</label>
+							Remember me		
+							</div>
+						</div>
 
 						<hr/>
 						<button type="submit" class="btn btn-success btn-lg col-xs-10 col-xs-offset-1">登录</button>

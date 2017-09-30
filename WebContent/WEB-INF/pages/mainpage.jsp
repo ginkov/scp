@@ -136,6 +136,7 @@
 					<ul class="submenu">
 						<li> <a href="<c:url value="/finance/balance/list"/>"> <span class="submenu-label">账户</span> </a> </li>
 						<li> <a href="<c:url value="/finance/expense/list"/>"> <span class="submenu-label">支出</span> </a> </li>
+						<li> <a href="<c:url value="/finance/nonsalesincome/list"/>"> <span class="submenu-label">非营收入</span> </a> </li>
 						<li> <a href="<c:url value="/finance/invoice/list"/>"> <span class="submenu-label">发票</span> </a> </li>
 					</ul>
 				</li>
@@ -171,6 +172,7 @@
 			    			<a href='#'><span class="submenu-label">财务</span></a>
 			    			<ul class="submenu third-level">
 								<li> <a href="<c:url value="/finance/exptype/list"/>"> <span class="submenu-label">支出类型</span> </a> </li>
+								<li> <a href="<c:url value="/finance/incometype/list"/>"> <span class="submenu-label">收入类型</span> </a> </li>
 			    			</ul>
 			    		</li>
 			    		</sec:authorize>

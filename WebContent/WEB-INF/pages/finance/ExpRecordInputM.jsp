@@ -23,8 +23,8 @@
 					<label class="col-xs-3 label-xs">付款人</label>
 					<div class="col-xs-8">
 <%-- 						<form:select id="staff" cssClass="chosen-select" path="staff.name" data-placeholder="请选择" required="true"> --%>
-						<form:select id="staff" cssClass="form-control" path="staff.name" data-placeholder="请选择" required="true">
 <%-- 							<form:option value="" label=""/> --%>
+						<form:select id="staff" cssClass="form-control" path="staff.name" data-placeholder="请选择" required="true">
 							<form:options items="${staffs}" itemLabel="description" itemValue="name"/>
 						</form:select>
 					</div>

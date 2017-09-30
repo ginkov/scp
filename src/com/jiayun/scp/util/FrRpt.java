@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jiayun.scp.dao.DaoService;
+import com.jiayun.scp.dao.NonSalesIncomeRecordService;
 import com.jiayun.scp.model.ExpRecord;
-import com.jiayun.scp.model.FinanceAction;
+//import com.jiayun.scp.model.FinanceAction;
 import com.jiayun.scp.model.FinanceRecord;
 import com.jiayun.scp.model.FrWeek;
+import com.jiayun.scp.model.NonSalesIncomeRecord;
 import com.jiayun.scp.model.SalesOrder;
 
 @Service
@@ -37,6 +39,8 @@ public class FrRpt {
 	private DaoService<SalesOrder> sos;
 	@Autowired
 	private DaoService<ExpRecord> ers;
+	@Autowired
+	private NonSalesIncomeRecordService nsirs;
 	
 	public FrRpt() {
 		minWeekMillis = 0L;
@@ -72,9 +76,10 @@ public class FrRpt {
 			double outAmt = 0.0;
 			double change = 0.0;
 			for(FinanceRecord fr: frWeeks[i].getIn()) {
-				if(fr.getAction() == FinanceAction.SALE) {
-					inAmt += fr.getAmount();
-				}
+//				if(fr.getAction() == FinanceAction.SALE) {
+//					inAmt += fr.getAmount();
+//				}
+				inAmt += fr.getAmount();
 			}
 			for(FinanceRecord fr: frWeeks[i].getOut()) {
 				outAmt += fr.getAmount();
@@ -135,19 +140,35 @@ public class FrRpt {
 			FinanceRecord fr = new FinanceRecord();
 			fr.fromExpRecord(er);
 			frList.add(fr);
-			long t = fr.getDate().getTime();
-			if(minDateMillis > t) {
-				minDateMillis = t;
-			}
-			if(maxDateMillis < t) {
-				maxDateMillis = t;
-			}
+//			long t = fr.getDate().getTime();
+//			if(minDateMillis > t) {
+//				minDateMillis = t;
+//			}
+//			if(maxDateMillis < t) {
+//				maxDateMillis = t;
+//			}
 		}
 		
 		for(SalesOrder so: sos.getAll()) {
 			FinanceRecord fr = new FinanceRecord();
 			fr.fromSalesOrder(so);
 			frList.add(fr);
+//			long t = fr.getDate().getTime();
+//			if(minDateMillis > t) {
+//				minDateMillis = t;
+//			}
+//			if(maxDateMillis < t) {
+//				maxDateMillis = t;
+//			}
+		}
+		
+		for(NonSalesIncomeRecord r: nsirs.getAll()) {
+			FinanceRecord fr = new FinanceRecord();
+			fr.fromNonSalesIncome(r);
+			frList.add(fr);
+		}
+		
+		for(FinanceRecord fr: frList) {
 			long t = fr.getDate().getTime();
 			if(minDateMillis > t) {
 				minDateMillis = t;
@@ -208,7 +229,4 @@ public class FrRpt {
 	public int getNumWeeks() {
 		return numWeeks;
 	}
-	
-	
-	
 }

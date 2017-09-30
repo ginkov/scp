@@ -198,6 +198,7 @@ create table order_service_join(
 	foreign key(service_record_id) references service_record(id)
 );
 
+-- 每年的订单初始号
 create table year_order(
 	year int unsigned primary key,
 	order_number int unsigned not null
@@ -319,3 +320,36 @@ insert into year_expense values
 (2090,0),(2091,0),(2092,0),(2093,0),(2094,0),(2095,0),(2096,0),(2097,0),(2098,0),(2099,0),
 (2100,0),(2101,0),(2102,0),(2103,0),(2104,0),(2105,0),(2106,0),(2107,0),(2108,0),(2109,0),
 (2110,0),(2111,0),(2112,0),(2113,0),(2114,0),(2115,0),(2116,0),(2117,0),(2118,0),(2119,0);
+
+create table income_type1(
+	id int unsigned auto_increment primary key,
+	name varchar(255) not null unique,
+	description varchar(255)
+);
+insert into income_type1 values
+(1, '销售收入', ''),
+(2, '投资', '');
+
+create table income_type2(
+	id int unsigned auto_increment primary key,
+	t1_id int unsigned not null,
+	name varchar(255) not null unique,
+	description varchar(255),
+	foreign key (t1_id) references income_type1(id)
+);
+
+insert into income_type2 values
+(null, 1, '花卉销售', ''),
+(null, 2, '内部投资', '');
+
+create table nonsales_income_record(
+	id int unsigned auto_increment primary key,
+	sn varchar(255) not null unique,
+	date date not null,
+	supplier varchar(255) ,
+	t2_id int unsigned not null,
+	name varchar(255),
+	summary varchar(1024) ,
+	amount decimal(12,3) not null default 0.0,
+	foreign key(t2_id) references income_type2(id)
+);

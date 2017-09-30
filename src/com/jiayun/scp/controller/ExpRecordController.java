@@ -111,7 +111,7 @@ public class ExpRecordController {
 		model.addAttribute("t2names", gson.toJson(getT2Names()));
 		model.addAttribute("staffs", getNormalStaffList());
 		model.addAttribute("er", er);
-		model.addAttribute("pageTitle","新订单");
+		model.addAttribute("pageTitle","新支出记录");
 		
 		String mobileSuffix = "";
 		if(hsr.getParameterMap().containsKey("mobile")) {

@@ -123,7 +123,7 @@
 					<form:hidden path="items[${vs.index}].id"/>
 					<div class="col-md-3">
 						<form:select cssClass="chosen-select" path="items[${vs.index}].prodSelling.id" data-placeholder="请选择"
-							onchange="productChanged(${vs.index})" id='prod${length}' data-id="${length}">
+							onchange="productChanged(${vs.index})" id='prod${vs.index}' data-id="${vs.index}">
 							<form:option value="" label=""/>
 							<c:forEach var="optGrp" items="${prodOpts}" varStatus="optGrpIndex">
 								<optgroup label="${optGrp.key}">
